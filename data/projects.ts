@@ -22,6 +22,7 @@ export type Project = {
   packagingDetails: readonly string[];
   coverImage: ProjectImage;
   detailImages: readonly ProjectImage[];
+  layout: "feature" | "portrait" | "split" | "fullBleed" | "layered" | "closing";
   selected: boolean;
   featured: boolean;
   sourceUrl?: `https://${string}`;
@@ -90,6 +91,7 @@ export const projects = [
     packagingDetails: ["Corrugated box format", "Illustrated panels", "Printed side details"],
     coverImage: ceciliaImage,
     detailImages: [ceciliaImage],
+    layout: "feature",
     selected: true,
     featured: false,
     sourceUrl: "https://www.instagram.com/p/DbUvP9mErpB/",
@@ -114,13 +116,14 @@ export const projects = [
     packagingDetails: ["Direct glass printing", "Single-colour wordmark", "Hospitality application"],
     coverImage: sodaShopImage,
     detailImages: [sodaShopImage],
+    layout: "portrait",
     selected: true,
     featured: false,
     sourceUrl: "https://www.instagram.com/p/DauQHuykpV4/",
   },
   {
     id: "bombaa",
-    number: "03",
+    number: "04",
     title: "Bombaa",
     category: "Printed collateral",
     industry: "Hospitality",
@@ -137,13 +140,14 @@ export const projects = [
     packagingDetails: ["Printed butter paper", "Illustrated coasters", "Table presentation"],
     coverImage: bombaaImage,
     detailImages: [bombaaImage],
+    layout: "fullBleed",
     selected: true,
     featured: false,
     sourceUrl: "https://www.instagram.com/p/DXyEDpBD5I-/",
   },
   {
     id: "khoya",
-    number: "04",
+    number: "05",
     title: "Khoya",
     category: "Gifting & merchandise",
     industry: "Food & Gifting",
@@ -160,13 +164,14 @@ export const projects = [
     packagingDetails: ["Rigid presentation boxes", "Printed ribbon", "Custom ceramic mugs"],
     coverImage: khoyaBoxesImage,
     detailImages: [khoyaBoxesImage, khoyaMugsImage],
+    layout: "layered",
     selected: true,
     featured: true,
     sourceUrl: "https://www.instagram.com/p/DXgiOlYEhha/",
   },
   {
     id: "ice-pop",
-    number: "05",
+    number: "03",
     title: "Ice Pop",
     category: "Carton packaging",
     industry: "Food & Beverage",
@@ -183,7 +188,8 @@ export const projects = [
     packagingDetails: ["Printed cartons", "Tactile detailing", "Compact product format"],
     coverImage: icePopImage,
     detailImages: [icePopImage],
-    selected: false,
+    layout: "split",
+    selected: true,
     featured: false,
   },
   {
@@ -205,14 +211,26 @@ export const projects = [
     packagingDetails: ["Ceramic mugs", "Custom surface printing", "Giftable brand objects"],
     coverImage: khoyaMugsImage,
     detailImages: [khoyaMugsImage],
-    selected: false,
+    layout: "closing",
+    selected: true,
     featured: false,
   },
 ] as const satisfies readonly Project[];
 
 export type ProjectId = (typeof projects)[number]["id"];
 
-export const selectedProjects = projects.filter((project) => project.selected);
+const selectedProjectOrder = [
+  "cecilia-pizzeria",
+  "soda-shop",
+  "ice-pop",
+  "bombaa",
+  "khoya",
+  "secret-ingredient-khoya",
+] as const;
+
+export const selectedProjects = selectedProjectOrder
+  .map((id) => projects.find((project) => project.id === id))
+  .filter((project): project is Project => Boolean(project?.selected));
 export const featuredProject = projects.find((project) => project.featured) ?? projects[0];
 
 export function getProjectById(id: string): Project | undefined {

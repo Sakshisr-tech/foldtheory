@@ -10,6 +10,7 @@ const links = [
   { href: "#services", id: "services", label: "Services" },
   { href: "#studio", id: "studio", label: "Studio" },
   { href: "#process", id: "process", label: "Process" },
+  { href: "#faq", id: "faq", label: "FAQ" },
   { href: "#contact", id: "contact", label: "Contact" },
 ] as const;
 
@@ -18,13 +19,13 @@ const observedSections = [
   ["introduction", "home"],
   ["work", "work"],
   ["services", "services"],
-  ["featured", "services"],
+  ["featured", "studio"],
   ["studio", "studio"],
-  ["archive", "studio"],
+  ["archive", "work"],
   ["process", "process"],
   ["about", "process"],
   ["trust", "process"],
-  ["faq", "process"],
+  ["faq", "faq"],
   ["contact", "contact"],
 ] as const;
 
@@ -51,21 +52,11 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const [loading, setLoading] = useState(true);
+  const [showPersistentCta, setShowPersistentCta] = useState(false);
   const lenisRef = useRef<Lenis | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const visited = window.sessionStorage.getItem("fold-theory-visited");
-    const duration = visited || reduceMotion ? 0 : 900;
-    const timer = window.setTimeout(() => {
-      setLoading(false);
-      window.sessionStorage.setItem("fold-theory-visited", "true");
-      window.dispatchEvent(new Event("fold-theory:ready"));
-    }, duration);
-    return () => window.clearTimeout(timer);
-  }, [reduceMotion]);
+  const progressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const onVisibility = () => {
@@ -135,6 +126,59 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    let frame: number | null = null;
+    const updateProgress = () => {
+      const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollRange > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollRange)) : 0;
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${progress})`;
+      frame = null;
+    };
+    const schedule = () => {
+      if (frame === null) frame = window.requestAnimationFrame(updateProgress);
+    };
+    updateProgress();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  useEffect(() => {
+    const services = document.getElementById("services");
+    const contact = document.getElementById("contact");
+    if (!services || !contact) return;
+
+    let frame: number | null = null;
+    let lastValue = false;
+    const updateCta = () => {
+      const servicesRect = services.getBoundingClientRect();
+      const contactRect = contact.getBoundingClientRect();
+      const hasPassedServices = servicesRect.bottom < window.innerHeight * 0.2;
+      const contactVisible = contactRect.top < window.innerHeight * 0.82 && contactRect.bottom > 0;
+      const nextValue = hasPassedServices && !contactVisible;
+      if (nextValue !== lastValue) {
+        lastValue = nextValue;
+        setShowPersistentCta(nextValue);
+      }
+      frame = null;
+    };
+    const schedule = () => {
+      if (frame === null) frame = window.requestAnimationFrame(updateCta);
+    };
+    updateCta();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {
@@ -226,34 +270,25 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     navigateTo(href, closeMenu);
   };
 
+  useEffect(() => {
+    const onInternalAnchor = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const anchor = target.closest<HTMLAnchorElement>("a[href^='#']");
+      const href = anchor?.getAttribute("href");
+      if (!href || href === "#" || anchor?.classList.contains("skip-link")) return;
+      event.preventDefault();
+      navigateTo(href);
+    };
+    document.addEventListener("click", onInternalAnchor);
+    return () => document.removeEventListener("click", onInternalAnchor);
+  }, [navigateTo]);
+
   return (
     <>
       <a className="skip-link" href="#main-content">Skip to content</a>
-
-      <AnimatePresence>
-        {loading && (
-          <motion.div
-            className="loader"
-            initial={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: reduceMotion ? 0.01 : 0.42, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="loader__inner">
-              <Image
-                className="loader__logo"
-                src="/images/projects/fold-theory-wordmark.jpg"
-                alt="Fold Theory — Printing and Packaging"
-                width={156}
-                height={156}
-                priority
-                unoptimized
-              />
-              <p>Unfolding the studio</p>
-              <span className="loader__track"><motion.i initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: reduceMotion ? 0.01 : 0.78, ease: [0.22, 1, 0.36, 1] }} /></span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="scroll-progress" aria-hidden="true"><span ref={progressRef} /></div>
 
       <header className={`site-header ${scrolled ? "site-header--scrolled" : ""}`}>
         <a href="#home" className="site-header__brand" aria-label="Fold Theory home" onClick={anchorHandler("#home")}>
@@ -327,6 +362,22 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
 
       <main id="main-content" tabIndex={-1}>{children}</main>
+
+      <AnimatePresence>
+        {showPersistentCta && (
+          <motion.a
+            className="persistent-project-cta"
+            href="#contact"
+            onClick={anchorHandler("#contact")}
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+            transition={{ duration: reduceMotion ? 0.01 : 0.38, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span>Start a Project</span><i aria-hidden="true">↗</i>
+          </motion.a>
+        )}
+      </AnimatePresence>
 
       <footer className="site-footer">
         <div className="site-footer__top">

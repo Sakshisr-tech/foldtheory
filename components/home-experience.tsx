@@ -14,6 +14,7 @@ import {
   featuredProject,
   industries,
   projects,
+  selectedProjects,
   selectedClients,
   studio,
   testimonials,
@@ -65,9 +66,12 @@ export function HomeExperience() {
       <section id="work" className="section section--work" aria-labelledby="work-title">
         <div className="section-shell">
           <SectionLabel number="02">Selected work</SectionLabel>
-          <div className="section-heading section-heading--split">
-            <Reveal><h2 id="work-title">Objects with a point of view.</h2></Reveal>
-            <p>Selected packaging, print and branded objects from Fold Theory&apos;s public studio archive.</p>
+          <div className="section-heading section-heading--split selected-work__intro">
+            <Reveal><h2 id="work-title">Packaging systems designed to be remembered.</h2></Reveal>
+            <div>
+              <p>A selection of identities, packaging and physical brand experiences created across food, hospitality, lifestyle and consumer products.</p>
+              <span>Selected Projects — 01–{String(selectedProjects.length).padStart(2, "0")}</span>
+            </div>
           </div>
           <ProjectShowcase />
         </div>

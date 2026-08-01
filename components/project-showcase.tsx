@@ -11,6 +11,14 @@ import {
 } from "@/data/projects";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const projectReveal: Record<Project["layout"], { opacity: number; x?: number; y?: number; scale?: number }> = {
+  feature: { opacity: 0, y: 24 },
+  portrait: { opacity: 0, x: 22 },
+  split: { opacity: 0, y: 14 },
+  fullBleed: { opacity: 0, scale: 1.012 },
+  layered: { opacity: 0, x: -18 },
+  closing: { opacity: 0, y: 20 },
+};
 
 type OpenProjectEvent = CustomEvent<{
   projectId: string;
@@ -116,53 +124,88 @@ export function ProjectShowcase() {
     modalScrollRef.current?.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   };
 
+  const openFromTrigger = (projectId: string) =>
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      openProject(projectId, event.currentTarget);
+    };
+
   return (
     <>
-      <div className="selected-work__grid">
+      <div className="selected-work__continuum">
         {selectedProjects.map((project, index) => (
           <motion.article
-            className={`project-card project-card--${index + 1}`}
+            className={`project-story project-story--${project.layout}`}
             key={project.id}
-            initial={reduceMotion ? false : { opacity: 0, y: 28 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-            transition={{ duration: 0.78, ease }}
+            initial={reduceMotion ? false : projectReveal[project.layout]}
+            whileInView={reduceMotion ? undefined : { opacity: 1, x: 0, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "0px 0px 12% 0px" }}
+            transition={{ duration: 0.76, ease }}
           >
-            <button
-              type="button"
-              className="project-card__trigger"
-              aria-label={`View ${project.title} project`}
-              aria-haspopup="dialog"
-              onClick={(event) => openProject(project.id, event.currentTarget)}
-            >
-              <span className="project-card__media">
+            <div className="project-story__media-composition">
+              <button
+                type="button"
+                className="project-story__main-media"
+                aria-label={`View ${project.title} project`}
+                aria-haspopup="dialog"
+                onClick={openFromTrigger(project.id)}
+              >
                 <Image
                   src={project.coverImage.src}
                   alt={project.coverImage.alt}
                   fill
-                  sizes={index === 0 || index === 3 ? "(max-width: 800px) 100vw, 64vw" : "(max-width: 800px) 100vw, 38vw"}
+                  sizes={project.layout === "portrait" ? "(max-width: 800px) 100vw, 42vw" : "(max-width: 800px) 100vw, 74vw"}
                   unoptimized
                 />
-                <span className="project-card__explore" aria-hidden="true">Explore</span>
+                <span className="project-story__explore" aria-hidden="true">Explore</span>
+              </button>
+
+              <figure className="project-story__detail-crop" aria-hidden="true">
+                <Image
+                  src={project.coverImage.src}
+                  alt=""
+                  fill
+                  sizes="(max-width: 800px) 38vw, 24vw"
+                  unoptimized
+                />
+              </figure>
+
+              <span className="project-story__floating-number" aria-hidden="true">
+                {project.number}
               </span>
-              <span className="project-card__info">
-                <span className="project-card__number">{project.number}</span>
-                <span className="project-card__name">
-                  <strong>{project.title}</strong>
-                  <small>{project.industry}</small>
-                </span>
-                <span className="project-card__services">{project.services.join(" · ")}</span>
-                <span className="project-card__summary">{project.summary}</span>
-                <span className="project-card__view">View Project <i aria-hidden="true">↗</i></span>
-              </span>
-            </button>
+            </div>
+
+            <div className="project-story__narrative">
+              <p className="project-story__kicker">
+                <span>{project.industry}</span>
+                <span>{project.category}</span>
+              </p>
+              <h3>{project.title}</h3>
+              <p className="project-story__summary">{project.summary}</p>
+              <p className="project-story__services">{project.services.join(" · ")}</p>
+              <button
+                type="button"
+                className="project-story__view"
+                aria-haspopup="dialog"
+                onClick={openFromTrigger(project.id)}
+              >
+                View Project <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+
+            {index < selectedProjects.length - 1 && (
+              <span className="project-story__connector" aria-hidden="true" />
+            )}
           </motion.article>
         ))}
       </div>
 
-      <div className="section-cta selected-work__cta">
-        <p>Have a product, identity or packaging challenge in mind?</p>
-        <a className="text-link" href="#contact">Tell us about your brand <span aria-hidden="true">↗</span></a>
+      <div className="selected-work__closing">
+        <p className="eyebrow">Your product, thoughtfully unfolded</p>
+        <h3>Have a product worth remembering?</h3>
+        <div>
+          <a className="button button--primary" href="#contact">Discuss Your Project <span aria-hidden="true">↗</span></a>
+          <a className="text-link" href="#archive">Explore the Full Archive <span aria-hidden="true">↓</span></a>
+        </div>
       </div>
 
       <dialog
@@ -258,6 +301,15 @@ export function ProjectShowcase() {
                 <button type="button" onClick={() => moveProject("next")}>
                   Next project <span aria-hidden="true">→</span>
                 </button>
+                <a
+                  href="#work"
+                  onClick={() => {
+                    originRef.current = null;
+                    closeProject();
+                  }}
+                >
+                  Return to Selected Work <span aria-hidden="true">↑</span>
+                </a>
               </nav>
               <p className="sr-only" aria-live="polite">Showing {activeProject.title}</p>
             </div>

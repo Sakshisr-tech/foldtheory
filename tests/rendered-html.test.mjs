@@ -27,9 +27,12 @@ test("server-renders the complete one-page Fold Theory experience", async () => 
 
   const html = await response.text();
   assert.match(html, /<title>Brand Identity &amp; Packaging Design Studio.*Fold Theory<\/title>/i);
-  assert.match(html, /We shape stories/);
-  assert.match(html, /you can hold/);
+  assert.match(html, /Brands people/);
+  assert.match(html, /remember before/);
+  assert.match(html, /they.*opened/);
   assert.match(html, /Independent Branding &amp; Packaging Studio/);
+  assert.match(html, /Packaging systems designed to be remembered/);
+  assert.match(html, /Selected Projects.*01.*06/);
   assert.match(html, /id="home"/);
   assert.match(html, /id="work"/);
   assert.match(html, /id="services"/);
@@ -41,6 +44,9 @@ test("server-renders the complete one-page Fold Theory experience", async () => 
   assert.match(html, /href="#contact"/);
   assert.match(html, /Cecilia Pizzeria/);
   assert.match(html, /Soda Shop/);
+  assert.match(html, /Ice Pop/);
+  assert.match(html, /Bombaa/);
+  assert.match(html, /Secret Ingredient/);
   assert.match(html, /Have something worth unfolding\?/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /ProfessionalService/);
@@ -60,7 +66,10 @@ test("keeps static page composition on the server and editable content in data f
   assert.doesNotMatch(page, /^\s*["']use client["']/m);
   assert.doesNotMatch(home, /^\s*["']use client["']/m);
   assert.match(chrome, /#work/);
+  assert.match(chrome, /#faq/);
   assert.match(chrome, /IntersectionObserver/);
+  assert.match(chrome, /scroll-progress/);
+  assert.match(chrome, /persistent-project-cta/);
   assert.match(projects, /cecilia-pizzeria/);
   assert.match(projects, /soda-shop/);
   assert.match(projects, /bombaa/);
