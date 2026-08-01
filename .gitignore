@@ -42,4 +42,5 @@ next-env.d.ts
 /work/
 /.npm-cache/
 /dev*.log
+/preview*.log
 /tsconfig.tsbuildinfo
