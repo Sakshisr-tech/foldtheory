@@ -63,7 +63,7 @@ export function ContactForm() {
   const [arrivalHighlighted, setArrivalHighlighted] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const startedAt = useRef(0);
-  const arrivalTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const arrivalTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     startedAt.current = Date.now();
