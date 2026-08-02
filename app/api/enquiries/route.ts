@@ -3,7 +3,9 @@ import { projectTypeOptions } from "@/data/services";
 
 export const runtime = "edge";
 
-const validProjectTypes = new Set(projectTypeOptions.map((option) => option.value));
+const validProjectTypes = new Set<string>(
+  projectTypeOptions.map((option) => option.value),
+);
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type EnquiryPayload = {
