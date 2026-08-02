@@ -4,6 +4,7 @@ export type NewEnquiry = {
   name: string;
   email: string;
   company: string;
+  phone: string;
   projectTypes: string[];
   description: string;
   budget?: string;
@@ -18,6 +19,7 @@ const createEnquiriesTable = `
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     company TEXT NOT NULL,
+    phone TEXT,
     project_types TEXT NOT NULL,
     description TEXT NOT NULL,
     budget TEXT,
@@ -36,7 +38,13 @@ function getBinding() {
 
 async function ensureEnquiriesTable() {
   const database = getBinding();
-  initialization ??= database.prepare(createEnquiriesTable).run();
+  initialization ??= (async () => {
+    await database.prepare(createEnquiriesTable).run();
+    const columns = await database.prepare("PRAGMA table_info(enquiries)").all<{ name: string }>();
+    if (!columns.results.some((column) => column.name === "phone")) {
+      await database.prepare("ALTER TABLE enquiries ADD COLUMN phone TEXT").run();
+    }
+  })();
   await initialization;
   return database;
 }
@@ -48,9 +56,9 @@ export async function saveEnquiry(enquiry: NewEnquiry) {
   const result = await database
     .prepare(
       `INSERT INTO enquiries (
-        id, created_at, name, email, company, project_types,
+        id, created_at, name, email, company, phone, project_types,
         description, budget, timeline, reference, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')`,
     )
     .bind(
       id,
@@ -58,6 +66,7 @@ export async function saveEnquiry(enquiry: NewEnquiry) {
       enquiry.name,
       enquiry.email,
       enquiry.company,
+      enquiry.phone,
       JSON.stringify(enquiry.projectTypes),
       enquiry.description,
       enquiry.budget || null,

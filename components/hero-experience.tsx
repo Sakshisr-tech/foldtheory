@@ -5,252 +5,197 @@ import {
   motion,
   useMotionValue,
   useReducedMotion,
+  useScroll,
   useSpring,
   useTransform,
 } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const headlineLines = ["Brands people", "remember", "before they’re", "opened."];
+
+type MagneticLinkProps = {
+  href: string;
+  variant: "primary" | "secondary";
+  children: ReactNode;
+};
+
+function MagneticLink({ href, variant, children }: MagneticLinkProps) {
+  const reduceMotion = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const smoothX = useSpring(x, { stiffness: 180, damping: 20, mass: 0.45 });
+  const smoothY = useSpring(y, { stiffness: 180, damping: 20, mass: 0.45 });
+
+  const handleMove = (event: ReactPointerEvent<HTMLAnchorElement>) => {
+    if (reduceMotion || event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    x.set(Math.max(-5, Math.min(5, (event.clientX - bounds.left - bounds.width / 2) * 0.1)));
+    y.set(Math.max(-3, Math.min(3, (event.clientY - bounds.top - bounds.height / 2) * 0.1)));
+  };
+
+  const reset = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.a
+      className={`split-hero__cta split-hero__cta--${variant}`}
+      href={href}
+      style={reduceMotion ? undefined : { x: smoothX, y: smoothY }}
+      onPointerMove={handleMove}
+      onPointerLeave={reset}
+      onBlur={reset}
+      whileHover={reduceMotion ? undefined : { scale: 1.015 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+    >
+      <span>{children}</span>
+      <span aria-hidden="true">↗︎</span>
+    </motion.a>
+  );
+}
 
 export function HeroExperience() {
   const reduceMotion = useReducedMotion();
-  const [showScrollCue, setShowScrollCue] = useState(true);
-  const frame = useRef<number | null>(null);
-  const finePointer = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [imageReady, setImageReady] = useState(false);
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
-  const smoothX = useSpring(pointerX, { stiffness: 78, damping: 27, mass: 0.72 });
-  const smoothY = useSpring(pointerY, { stiffness: 78, damping: 27, mass: 0.72 });
-  const mainX = useTransform(smoothX, (value) => value * 4);
-  const mainY = useTransform(smoothY, (value) => value * 4);
-  const detailX = useTransform(smoothX, (value) => value * -7);
-  const detailY = useTransform(smoothY, (value) => value * -7);
-  const paperX = useTransform(smoothX, (value) => value * 8);
-  const paperY = useTransform(smoothY, (value) => value * 8);
-  const headlineX = useTransform(smoothX, (value) => value * 1.5);
-  const headlineY = useTransform(smoothY, (value) => value * 1.5);
+  const smoothPointerX = useSpring(pointerX, { stiffness: 58, damping: 24, mass: 0.85 });
+  const smoothPointerY = useSpring(pointerY, { stiffness: 58, damping: 24, mass: 0.85 });
+  const imageX = useTransform(smoothPointerX, (value) => value * 3);
+  const imageY = useTransform(smoothPointerY, (value) => value * 3);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.58, 0.94], [1, 0.88, 0]);
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, -38]);
+  const visualScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
+  const visualY = useTransform(scrollYProgress, [0, 1], [0, 28]);
 
-  useEffect(() => {
-    finePointer.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    let cueFrame: number | null = null;
-    let lastValue = window.scrollY < 100;
-
-    const onScroll = () => {
-      if (cueFrame !== null) return;
-      cueFrame = window.requestAnimationFrame(() => {
-        const nextValue = window.scrollY < 100;
-        if (nextValue !== lastValue) {
-          lastValue = nextValue;
-          setShowScrollCue(nextValue);
-        }
-        cueFrame = null;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (cueFrame !== null) window.cancelAnimationFrame(cueFrame);
-      if (frame.current !== null) window.cancelAnimationFrame(frame.current);
-    };
-  }, []);
-
-  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (reduceMotion || !finePointer.current || document.hidden || frame.current !== null) return;
+  const handleImageMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (reduceMotion || event.pointerType === "touch") return;
     const bounds = event.currentTarget.getBoundingClientRect();
-    const clientX = event.clientX;
-    const clientY = event.clientY;
-
-    frame.current = window.requestAnimationFrame(() => {
-      pointerX.set(((clientX - bounds.left) / bounds.width - 0.5) * 2);
-      pointerY.set(((clientY - bounds.top) / bounds.height - 0.5) * 2);
-      frame.current = null;
-    });
+    pointerX.set(((event.clientX - bounds.left) / bounds.width - 0.5) * 2);
+    pointerY.set(((event.clientY - bounds.top) / bounds.height - 0.5) * 2);
   };
 
-  const resetPointer = () => {
-    if (frame.current !== null) {
-      window.cancelAnimationFrame(frame.current);
-      frame.current = null;
-    }
+  const resetImagePosition = () => {
     pointerX.set(0);
     pointerY.set(0);
   };
 
-  const openFeaturedProject = (event: React.MouseEvent<HTMLButtonElement>) => {
-    document.documentElement.dataset.foldTheoryPendingProject = "cecilia-pizzeria";
-    window.dispatchEvent(
-      new CustomEvent("fold-theory:open-project", {
-        detail: { projectId: "cecilia-pizzeria", trigger: event.currentTarget },
-      }),
-    );
-  };
-
   return (
-    <section
-      id="home"
-      className="hero"
-      aria-labelledby="hero-title"
-      onPointerMove={handlePointerMove}
-      onPointerLeave={resetPointer}
-    >
-      <div className="hero__visual" data-parallax="14" aria-label="Featured Cecilia Pizzeria packaging project">
-        <motion.button
-          type="button"
-          className="hero__main-image"
-          aria-label="View Cecilia Pizzeria project"
-          aria-haspopup="dialog"
-          style={{ x: mainX, y: mainY }}
-          initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
-          animate={{ clipPath: "inset(0% 0 0% 0)" }}
-          transition={{ delay: 0.08, duration: 1.05, ease }}
-          onClick={openFeaturedProject}
-        >
-          <motion.span
-            className="hero__main-media"
-            initial={reduceMotion ? false : { scale: 1.08 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.08, duration: 1.18, ease }}
-          >
-            <Image
-              src="/images/projects/cecilia-pasta-kit.jpg"
-              alt="Illustrated blue and cream pasta-kit boxes produced for Cecilia Pizzeria"
-              fill
-              priority
-              sizes="(max-width: 900px) 100vw, 64vw"
-              unoptimized
-            />
-          </motion.span>
-          <span className="hero__image-wash" aria-hidden="true" />
-          <span className="hero__explore" aria-hidden="true">View project</span>
-          <span className="hero__visible-action">
-            View Project <i aria-hidden="true">↗</i>
-          </span>
-        </motion.button>
-
-        <div className="hero__detail-depth" data-parallax="10">
-          <motion.figure
-            className="hero__detail-image"
-            style={{ x: detailX, y: detailY }}
-            initial={reduceMotion ? false : { opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.72, duration: 0.78, ease }}
-            aria-hidden="true"
-          >
-            <Image
-              src="/images/projects/cecilia-pasta-kit.jpg"
-              alt=""
-              fill
-              sizes="(max-width: 900px) 40vw, 17vw"
-              unoptimized
-            />
-          </motion.figure>
-        </div>
-
-        <div className="hero__paper-depth" data-parallax="16">
-          <motion.figure
-            className="hero__paper-detail"
-            style={{ x: paperX, y: paperY }}
-            initial={reduceMotion ? false : { opacity: 0, x: 14 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.92, duration: 0.7, ease }}
-            aria-hidden="true"
-          >
-            <Image
-              src="/images/projects/cecilia-pasta-kit.jpg"
-              alt=""
-              fill
-              sizes="(max-width: 900px) 26vw, 11vw"
-              unoptimized
-            />
-          </motion.figure>
-        </div>
-
-        <motion.div
-          className="hero__caption"
-          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.36, duration: 0.48, ease }}
-        >
-          <span>Featured project — 01</span>
-          <strong>Cecilia Pizzeria</strong>
-          <span>Custom packaging · Delhi</span>
-        </motion.div>
-      </div>
-
-      <div className="hero__copy" data-parallax="-10">
-        <motion.p
-          className="eyebrow hero__eyebrow"
-          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.16, duration: 0.56, ease }}
-        >
-          Independent Branding &amp; Packaging Studio
-        </motion.p>
-
-        <motion.h1 id="hero-title" className="hero__title" style={{ x: headlineX, y: headlineY }}>
-          {["Brands people ", "remember before ", "they’re opened."].map((line, index) => (
-            <span className="line-mask" key={line}>
-              <motion.span
-                initial={reduceMotion ? false : { y: "112%" }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.32 + index * 0.1, duration: 0.84, ease }}
-              >
-                {line}
-              </motion.span>
-            </span>
-          ))}
-        </motion.h1>
-
-        <div className="hero__lower">
-          <motion.p
-            className="hero__description"
-            initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.86, duration: 0.6, ease }}
-          >
-            We create thoughtful identities, packaging systems and printed
-            experiences for food, hospitality, lifestyle and consumer brands.
-          </motion.p>
-
-          <motion.div
-            className="hero__actions"
-            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.02, duration: 0.6, ease }}
-          >
-            <a className="button button--primary" href="#contact">
-              <span>Start a Project</span>
-              <span aria-hidden="true">↗</span>
-            </a>
-            <a className="button button--secondary" href="#work">
-              <span>Explore Selected Work</span>
-              <span aria-hidden="true">↓</span>
-            </a>
-          </motion.div>
-
-          <motion.div
-            className="hero__metadata"
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.28, duration: 0.5 }}
-          >
-            <span>New Delhi, India</span>
-            <span>Identity · Packaging · Print</span>
-          </motion.div>
-        </div>
+    <section id="home" ref={sectionRef} className="split-hero split-hero--edge" aria-labelledby="hero-title">
+      <div className="split-hero__grain" aria-hidden="true" />
+      <div className="split-hero__ghost-type" aria-hidden="true">
+        <span>Packaging</span>
+        <span>Branding</span>
       </div>
 
       <motion.div
-        className={`scroll-cue ${showScrollCue ? "" : "scroll-cue--hidden"}`}
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.62, duration: 0.45 }}
-        aria-hidden="true"
+        className="split-hero__visual"
+        style={reduceMotion ? undefined : { scale: visualScale, y: visualY }}
+        initial={reduceMotion ? false : { opacity: 0, x: 34 }}
+        animate={{ opacity: imageReady ? 1 : 0, x: 0 }}
+        transition={{ duration: reduceMotion ? 0.01 : 1.2, delay: 0.16, ease }}
+        onPointerMove={handleImageMove}
+        onPointerLeave={resetImagePosition}
       >
-        <span>Scroll to unfold</span>
-        <i />
+        <motion.div
+          className="split-hero__float"
+          animate={reduceMotion ? { y: 0 } : { y: [0, -3, 0] }}
+          transition={
+            reduceMotion
+              ? { duration: 0.01 }
+              : { duration: 10.5, repeat: Infinity, ease: "easeInOut" }
+          }
+        >
+          <motion.div
+            className="split-hero__image-media"
+            style={reduceMotion ? undefined : { x: imageX, y: imageY }}
+          >
+            <Image
+              src="/images/projects/injectoplast-packaging-hero.png"
+              alt="Two custom cylindrical tea packages displayed in a warm interior setting"
+              fill
+              priority
+              sizes="(min-width: 1025px) 48vw, 100vw"
+              unoptimized
+              onLoad={() => setImageReady(true)}
+            />
+          </motion.div>
+        </motion.div>
       </motion.div>
+
+      <div className="split-hero__shell">
+        <motion.div
+          className="split-hero__copy"
+          style={reduceMotion ? undefined : { opacity: copyOpacity, y: copyY }}
+        >
+          <motion.p
+            className="split-hero__eyebrow"
+            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.16, duration: reduceMotion ? 0.01 : 0.66, ease }}
+          >
+            Independent Branding &amp; Packaging Studio
+          </motion.p>
+
+          <h1 id="hero-title" className="split-hero__title">
+            {headlineLines.map((line, index) => (
+              <span className="split-hero__line" key={line}>
+                <motion.span
+                  initial={reduceMotion ? false : { y: "112%" }}
+                  animate={{ y: 0 }}
+                  transition={{
+                    delay: 0.28 + index * 0.1,
+                    duration: reduceMotion ? 0.01 : 0.86,
+                    ease,
+                  }}
+                >
+                  {line}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
+
+          <motion.p
+            className="split-hero__description"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.78, duration: reduceMotion ? 0.01 : 0.68, ease }}
+          >
+            Distinctive packaging for food, gifting and retail brands—crafted to make
+            every first touch feel unforgettable.
+          </motion.p>
+
+          <motion.span
+            className="split-hero__divider"
+            initial={reduceMotion ? false : { opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ delay: 0.9, duration: reduceMotion ? 0.01 : 0.56, ease }}
+            aria-hidden="true"
+          />
+
+          <motion.div
+            className="split-hero__actions"
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.98, duration: reduceMotion ? 0.01 : 0.68, ease }}
+          >
+            <MagneticLink href="#contact" variant="primary">
+              Start Your Project
+            </MagneticLink>
+            <MagneticLink href="#work" variant="secondary">
+              View Our Work
+            </MagneticLink>
+          </motion.div>
+        </motion.div>
+      </div>
+
     </section>
   );
 }

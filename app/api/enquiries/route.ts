@@ -10,6 +10,7 @@ type EnquiryPayload = {
   name?: unknown;
   email?: unknown;
   company?: unknown;
+  phone?: unknown;
   projectTypes?: unknown;
   description?: unknown;
   budget?: unknown;
@@ -47,6 +48,7 @@ export async function POST(request: Request) {
   const name = clean(payload.name, 100);
   const email = clean(payload.email, 200).toLowerCase();
   const company = clean(payload.company, 160);
+  const phone = clean(payload.phone, 80);
   const description = clean(payload.description, 4_000);
   const budget = clean(payload.budget, 200);
   const timeline = clean(payload.timeline, 200);
@@ -58,7 +60,10 @@ export async function POST(request: Request) {
   if (name.length < 2) return badRequest("Please share your name.");
   if (!emailPattern.test(email)) return badRequest("Please enter a valid email address.");
   if (company.length < 2) return badRequest("Please share your brand or company.");
+  if (phone.replace(/\D/g, "").length < 7) return badRequest("Please enter a valid phone or WhatsApp number.");
   if (projectTypes.length === 0) return badRequest("Please choose a project type.");
+  if (!budget) return badRequest("Please choose a budget range.");
+  if (!timeline) return badRequest("Please choose a timeline.");
   if (description.length < 20) return badRequest("Please add a little more project detail.");
 
   if (reference) {
@@ -76,6 +81,7 @@ export async function POST(request: Request) {
       name,
       email,
       company,
+      phone,
       projectTypes,
       description,
       budget,

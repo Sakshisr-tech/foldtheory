@@ -70,6 +70,13 @@ const icePopImage: ProjectImage = {
   height: 937,
 };
 
+const presentationGiftingImage: ProjectImage = {
+  src: "/images/projects/green-gift-boxes.jpg",
+  alt: "Deep green rigid presentation boxes from the Fold Theory studio archive",
+  width: 1440,
+  height: 1440,
+};
+
 export const projects = [
   {
     id: "cecilia-pizzeria",
@@ -215,6 +222,29 @@ export const projects = [
     selected: true,
     featured: false,
   },
+  {
+    id: "presentation-gifting",
+    number: "07",
+    title: "Presentation Gifting",
+    category: "Rigid packaging",
+    industry: "Gifting & Retail",
+    summary: "Deep green presentation boxes shaped into a quiet, tactile gifting experience.",
+    overview:
+      "A restrained presentation packaging study from Fold Theory's studio archive, focused on proportion, material and opening experience.",
+    challenge:
+      "Create a gift-ready format that feels substantial and premium without relying on decorative excess.",
+    solution:
+      "A rich green paper wrap, precise rigid construction and understated mark keep attention on touch, weight and reveal.",
+    outcome:
+      "A refined family of presentation boxes photographed as part of the Fold Theory studio archive.",
+    services: ["Presentation Packaging", "Material Direction", "Production"],
+    packagingDetails: ["Rigid box construction", "Textured paper wrap", "Foil brand detail"],
+    coverImage: presentationGiftingImage,
+    detailImages: [presentationGiftingImage],
+    layout: "portrait",
+    selected: true,
+    featured: false,
+  },
 ] as const satisfies readonly Project[];
 
 export type ProjectId = (typeof projects)[number]["id"];
@@ -226,6 +256,7 @@ const selectedProjectOrder = [
   "bombaa",
   "khoya",
   "secret-ingredient-khoya",
+  "presentation-gifting",
 ] as const;
 
 export const selectedProjects = selectedProjectOrder

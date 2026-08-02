@@ -1,21 +1,89 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
+import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { projectTypeOptions } from "@/data/services";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
-type FieldErrors = Partial<Record<"name" | "email" | "company" | "projectTypes" | "description" | "reference", string>>;
+type FieldName = "name" | "email" | "company" | "phone" | "projectTypes" | "budget" | "timeline" | "description" | "reference";
+type FieldErrors = Partial<Record<FieldName, string>>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const budgetOptions = [
+  "Under ₹25,000",
+  "₹25,000–₹50,000",
+  "₹50,000–₹1,00,000",
+  "₹1,00,000+",
+  "Not sure yet",
+] as const;
+
+const timelineOptions = [
+  "As soon as possible",
+  "Within 1 month",
+  "1–3 months",
+  "3+ months",
+  "Flexible",
+] as const;
+
+function RevealField({
+  children,
+  className = "field",
+  index,
+  reduceMotion,
+}: {
+  children: ReactNode;
+  className?: string;
+  index: number;
+  reduceMotion: boolean | null;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+      transition={{ delay: reduceMotion ? 0 : 0.08 + index * 0.045, duration: reduceMotion ? 0.01 : 0.52, ease }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function RequiredMark() {
+  return <span aria-hidden="true">*</span>;
+}
 
 export function ContactForm() {
+  const reduceMotion = useReducedMotion();
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
-  const summaryRef = useRef<HTMLDivElement>(null);
+  const [arrivalHighlighted, setArrivalHighlighted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const startedAt = useRef(0);
+  const arrivalTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
 
   useEffect(() => {
     startedAt.current = Date.now();
+  }, []);
+
+  useEffect(() => {
+    const highlight = () => {
+      if (arrivalTimerRef.current !== null) window.clearTimeout(arrivalTimerRef.current);
+      setArrivalHighlighted(false);
+      window.requestAnimationFrame(() => {
+        setArrivalHighlighted(true);
+        arrivalTimerRef.current = window.setTimeout(() => setArrivalHighlighted(false), 1100);
+      });
+    };
+
+    window.addEventListener("fold-theory:highlight-contact", highlight);
+    return () => {
+      window.removeEventListener("fold-theory:highlight-contact", highlight);
+      if (arrivalTimerRef.current !== null) window.clearTimeout(arrivalTimerRef.current);
+    };
   }, []);
 
   const validate = (data: FormData): FieldErrors => {
@@ -23,15 +91,21 @@ export function ContactForm() {
     const name = String(data.get("name") ?? "").trim();
     const email = String(data.get("email") ?? "").trim();
     const company = String(data.get("company") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const projectType = String(data.get("projectTypes") ?? "").trim();
+    const budget = String(data.get("budget") ?? "").trim();
+    const timeline = String(data.get("timeline") ?? "").trim();
     const description = String(data.get("description") ?? "").trim();
     const reference = String(data.get("reference") ?? "").trim();
-    const projectTypes = data.getAll("projectTypes");
 
     if (name.length < 2) nextErrors.name = "Please share your name.";
     if (!emailPattern.test(email)) nextErrors.email = "Enter a valid email address.";
     if (company.length < 2) nextErrors.company = "Please share your brand or company name.";
-    if (projectTypes.length === 0) nextErrors.projectTypes = "Choose at least one project type.";
-    if (description.length < 20) nextErrors.description = "Tell us a little more about the project (at least 20 characters).";
+    if (phone.replace(/\D/g, "").length < 7) nextErrors.phone = "Enter a valid phone or WhatsApp number.";
+    if (!projectType) nextErrors.projectTypes = "Choose a project type.";
+    if (!budget) nextErrors.budget = "Choose a budget range.";
+    if (!timeline) nextErrors.timeline = "Choose a preferred timeline.";
+    if (description.length < 20) nextErrors.description = "Please add at least 20 characters of project detail.";
     if (reference) {
       try {
         const url = new URL(reference);
@@ -52,12 +126,13 @@ export function ContactForm() {
     setStatus("idle");
 
     if (Object.keys(nextErrors).length > 0) {
-      window.requestAnimationFrame(() => summaryRef.current?.focus());
+      window.requestAnimationFrame(() => form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
       return;
     }
 
     setStatus("submitting");
     try {
+      const projectType = String(data.get("projectTypes") ?? "").trim();
       const response = await fetch("/api/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,7 +140,8 @@ export function ContactForm() {
           name: String(data.get("name") ?? "").trim(),
           email: String(data.get("email") ?? "").trim(),
           company: String(data.get("company") ?? "").trim(),
-          projectTypes: data.getAll("projectTypes").map(String),
+          phone: String(data.get("phone") ?? "").trim(),
+          projectTypes: projectType ? [projectType] : [],
           description: String(data.get("description") ?? "").trim(),
           budget: String(data.get("budget") ?? "").trim(),
           timeline: String(data.get("timeline") ?? "").trim(),
@@ -84,34 +160,34 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="form-success" role="status" tabIndex={-1}>
-        <span aria-hidden="true">✓</span>
-        <h3>Thank you. Your project enquiry has been received.</h3>
-        <p>We have kept every detail you shared. You can also continue the conversation on Instagram.</p>
-        <a className="button button--light" href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">
-          Visit @fold.theory2 <span aria-hidden="true">↗</span>
-        </a>
-      </div>
+      <motion.div
+        className="form-success contact-success"
+        role="status"
+        tabIndex={-1}
+        initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: reduceMotion ? 0.01 : 0.62, ease }}
+      >
+        <span className="contact-success__eyebrow">Enquiry received</span>
+        <h3>Thank you.</h3>
+        <p>Your project enquiry has been received.<br />We’ll get back to you within 1–2 business days.</p>
+        <a href="#work">Return to Work <span aria-hidden="true">→</span></a>
+      </motion.div>
     );
   }
 
   return (
-    <form className="enquiry-form" noValidate onSubmit={submit} aria-busy={status === "submitting"}>
-      {Object.keys(errors).length > 0 && (
-        <div className="form-summary" role="alert" tabIndex={-1} ref={summaryRef}>
-          <strong>Please review the highlighted fields.</strong>
-          <ul>
-            {Object.entries(errors).map(([field, message]) => (
-              <li key={field}><a href={`#${field}`}>{message}</a></li>
-            ))}
-          </ul>
-        </div>
-      )}
-
+    <form
+      ref={formRef}
+      className={`enquiry-form contact-brief ${arrivalHighlighted ? "enquiry-form--arrival" : ""}`}
+      noValidate
+      onSubmit={submit}
+      aria-busy={status === "submitting"}
+    >
       {status === "error" && (
         <div className="form-status form-status--error" role="alert">
           <strong>Your enquiry could not be sent yet.</strong>
-          <p>Your details are still here. Please retry, or message <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">@fold.theory2</a>.</p>
+          <p>Your details are still here. Please retry or email <a href="mailto:hello@foldtheory.com">hello@foldtheory.com</a>.</p>
         </div>
       )}
 
@@ -120,66 +196,102 @@ export function ContactForm() {
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="form-grid">
-        <div className="field">
-          <label htmlFor="name">Name <span aria-hidden="true">*</span></label>
-          <input id="name" name="name" type="text" autoComplete="name" placeholder="Your name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} />
+      <div className="contact-brief__grid">
+        <RevealField index={0} reduceMotion={reduceMotion}>
+          <label htmlFor="name">Name <RequiredMark /></label>
+          <div className="field__control">
+            <input id="name" name="name" type="text" autoComplete="name" placeholder="Your name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} />
+          </div>
           {errors.name && <span id="name-error" className="field-error">{errors.name}</span>}
-        </div>
-        <div className="field">
-          <label htmlFor="email">Email <span aria-hidden="true">*</span></label>
-          <input id="email" name="email" type="email" autoComplete="email" placeholder="you@brand.com" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
+        </RevealField>
+
+        <RevealField index={1} reduceMotion={reduceMotion}>
+          <label htmlFor="email">Email <RequiredMark /></label>
+          <div className="field__control">
+            <input id="email" name="email" type="email" autoComplete="email" placeholder="you@brand.com" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
+          </div>
           {errors.email && <span id="email-error" className="field-error">{errors.email}</span>}
-        </div>
-        <div className="field form-grid__wide">
-          <label htmlFor="company">Brand or company <span aria-hidden="true">*</span></label>
-          <input id="company" name="company" type="text" autoComplete="organization" placeholder="Brand, company or working name" aria-invalid={Boolean(errors.company)} aria-describedby={errors.company ? "company-error" : undefined} />
+        </RevealField>
+
+        <RevealField index={2} reduceMotion={reduceMotion}>
+          <label htmlFor="company">Brand / Company <RequiredMark /></label>
+          <div className="field__control">
+            <input id="company" name="company" type="text" autoComplete="organization" placeholder="Your brand or company" aria-invalid={Boolean(errors.company)} aria-describedby={errors.company ? "company-error" : undefined} />
+          </div>
           {errors.company && <span id="company-error" className="field-error">{errors.company}</span>}
-        </div>
-      </div>
+        </RevealField>
 
-      <fieldset id="projectTypes" className="project-types" aria-describedby={errors.projectTypes ? "projectTypes-error" : undefined}>
-        <legend>Project type <span aria-hidden="true">*</span> <small>Select all that apply</small></legend>
-        <div className="project-types__grid">
-          {projectTypeOptions.map((option) => (
-            <label key={option.value}>
-              <input type="checkbox" name="projectTypes" value={option.value} />
-              <span>{option.label}<i aria-hidden="true">✓</i></span>
-            </label>
-          ))}
-        </div>
-        {errors.projectTypes && <span id="projectTypes-error" className="field-error">{errors.projectTypes}</span>}
-      </fieldset>
+        <RevealField index={3} reduceMotion={reduceMotion}>
+          <label htmlFor="phone">Phone / WhatsApp <RequiredMark /></label>
+          <div className="field__control">
+            <input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="+91 00000 00000" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "phone-error" : undefined} />
+          </div>
+          {errors.phone && <span id="phone-error" className="field-error">{errors.phone}</span>}
+        </RevealField>
 
-      <div className="field">
-        <label htmlFor="description">Project description <span aria-hidden="true">*</span></label>
-        <textarea id="description" name="description" rows={5} placeholder="What are you making, what do you need, and what should the work achieve?" aria-invalid={Boolean(errors.description)} aria-describedby={errors.description ? "description-error" : undefined} />
-        {errors.description && <span id="description-error" className="field-error">{errors.description}</span>}
-      </div>
+        <RevealField index={4} reduceMotion={reduceMotion}>
+          <label htmlFor="projectTypes">Project Type <RequiredMark /></label>
+          <div className="field__control field__control--select">
+            <select id="projectTypes" name="projectTypes" defaultValue="" aria-invalid={Boolean(errors.projectTypes)} aria-describedby={errors.projectTypes ? "projectTypes-error" : undefined}>
+              <option value="" disabled>Select a project type</option>
+              {projectTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+          </div>
+          {errors.projectTypes && <span id="projectTypes-error" className="field-error">{errors.projectTypes}</span>}
+        </RevealField>
 
-      <div className="form-grid form-grid--optional">
-        <div className="field">
-          <label htmlFor="budget">Estimated budget <small>Optional</small></label>
-          <input id="budget" name="budget" type="text" placeholder="Share a range or say open" />
-        </div>
-        <div className="field">
-          <label htmlFor="timeline">Desired timeline <small>Optional</small></label>
-          <input id="timeline" name="timeline" type="text" placeholder="Launch date or preferred window" />
-        </div>
-        <div className="field form-grid__wide">
-          <label htmlFor="reference">Inspiration or reference link <small>Optional</small></label>
-          <input id="reference" name="reference" type="url" inputMode="url" placeholder="https://" aria-invalid={Boolean(errors.reference)} aria-describedby={errors.reference ? "reference-error" : undefined} />
+        <RevealField index={5} reduceMotion={reduceMotion}>
+          <label htmlFor="budget">Budget Range <RequiredMark /></label>
+          <div className="field__control field__control--select">
+            <select id="budget" name="budget" defaultValue="" aria-invalid={Boolean(errors.budget)} aria-describedby={errors.budget ? "budget-error" : undefined}>
+              <option value="" disabled>Select a range</option>
+              {budgetOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </div>
+          {errors.budget && <span id="budget-error" className="field-error">{errors.budget}</span>}
+        </RevealField>
+
+        <RevealField index={6} reduceMotion={reduceMotion}>
+          <label htmlFor="timeline">Timeline <RequiredMark /></label>
+          <div className="field__control field__control--select">
+            <select id="timeline" name="timeline" defaultValue="" aria-invalid={Boolean(errors.timeline)} aria-describedby={errors.timeline ? "timeline-error" : undefined}>
+              <option value="" disabled>Select a timeline</option>
+              {timelineOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </div>
+          {errors.timeline && <span id="timeline-error" className="field-error">{errors.timeline}</span>}
+        </RevealField>
+
+        <RevealField index={7} reduceMotion={reduceMotion}>
+          <label htmlFor="reference">Reference / Inspiration URL <small>Optional</small></label>
+          <div className="field__control">
+            <input id="reference" name="reference" type="url" inputMode="url" placeholder="https://" aria-invalid={Boolean(errors.reference)} aria-describedby={errors.reference ? "reference-error" : undefined} />
+          </div>
           {errors.reference && <span id="reference-error" className="field-error">{errors.reference}</span>}
-        </div>
+        </RevealField>
+
+        <RevealField className="field contact-brief__details" index={8} reduceMotion={reduceMotion}>
+          <label htmlFor="description">Project Details <RequiredMark /></label>
+          <div className="field__control field__control--textarea">
+            <textarea id="description" name="description" rows={4} placeholder="Briefly describe your product, audience and packaging goals." aria-invalid={Boolean(errors.description)} aria-describedby={errors.description ? "description-error" : undefined} />
+          </div>
+          {errors.description && <span id="description-error" className="field-error">{errors.description}</span>}
+        </RevealField>
       </div>
 
-      <div className="enquiry-form__submit">
-        <button className="button button--light" type="submit" disabled={status === "submitting"}>
-          <span>{status === "submitting" ? "Sending enquiry…" : "Request a Project Estimate"}</span>
-          <span aria-hidden="true">↗</span>
+      <motion.div
+        className="contact-brief__submit"
+        initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+        transition={{ delay: reduceMotion ? 0 : 0.48, duration: reduceMotion ? 0.01 : 0.54, ease }}
+      >
+        <p>Your details stay private.<br />No spam, only a thoughtful response.</p>
+        <button type="submit" disabled={status === "submitting"}>
+          <span>{status === "submitting" ? "Sending…" : "Start Your Project"}</span>
+          <span aria-hidden="true">↗︎</span>
         </button>
-        <p>Required fields are marked with an asterisk.</p>
-      </div>
+      </motion.div>
     </form>
   );
 }

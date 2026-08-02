@@ -6,6 +6,7 @@ export const enquiries = sqliteTable("enquiries", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   company: text("company").notNull(),
+  phone: text("phone"),
   projectTypes: text("project_types").notNull(),
   description: text("description").notNull(),
   budget: text("budget"),

@@ -122,12 +122,13 @@ export type ProjectTypeOption = {
 };
 
 export const projectTypeOptions = [
-  { value: "brand-strategy", label: "Brand Strategy" },
-  { value: "visual-identity", label: "Visual Identity" },
-  { value: "packaging-design", label: "Packaging Design" },
-  { value: "print-collateral", label: "Print & Collateral" },
-  { value: "corporate-gifting", label: "Corporate Gifting" },
-  { value: "hospitality-branding", label: "Hospitality Branding" },
-  { value: "art-direction", label: "Art Direction" },
+  { value: "food-packaging", label: "Food Packaging" },
+  { value: "beverage-packaging", label: "Beverage Packaging" },
+  { value: "gifting", label: "Gifting" },
+  { value: "retail-packaging", label: "Retail Packaging" },
+  { value: "rigid-boxes", label: "Rigid Boxes" },
+  { value: "cups-and-sleeves", label: "Cups and Sleeves" },
+  { value: "bags", label: "Bags" },
+  { value: "brand-identity", label: "Brand Identity" },
   { value: "other", label: "Other" },
 ] as const satisfies readonly ProjectTypeOption[];

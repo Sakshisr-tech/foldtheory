@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type Lenis from "lenis";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -8,9 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const links = [
   { href: "#work", id: "work", label: "Work" },
   { href: "#services", id: "services", label: "Services" },
-  { href: "#studio", id: "studio", label: "Studio" },
-  { href: "#process", id: "process", label: "Process" },
-  { href: "#faq", id: "faq", label: "FAQ" },
+  { href: "#studio", id: "studio", label: "About" },
   { href: "#contact", id: "contact", label: "Contact" },
 ] as const;
 
@@ -48,6 +47,7 @@ function Wordmark({ light = false }: { light?: boolean }) {
 }
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const reduceMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -255,7 +255,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         if (!target) return;
         window.history.replaceState(null, "", href);
         if (reduceMotion || !lenisRef.current) target.scrollIntoView({ behavior: "auto", block: "start" });
-        else lenisRef.current.scrollTo(target, { offset: -72, duration: 1.02 });
+        else lenisRef.current.scrollTo(target, { offset: id === "contact" ? 0 : -72, duration: 1.02 });
       };
       if (closeMenu) {
         setMenuOpen(false);
@@ -290,8 +290,13 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <div className="scroll-progress" aria-hidden="true"><span ref={progressRef} /></div>
 
-      <header className={`site-header ${scrolled ? "site-header--scrolled" : ""}`}>
-        <a href="#home" className="site-header__brand" aria-label="Fold Theory home" onClick={anchorHandler("#home")}>
+      <motion.header
+        className={`site-header ${scrolled ? "site-header--scrolled" : ""}`}
+        initial={reduceMotion ? false : { opacity: 0, y: -28 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: reduceMotion ? 0.01 : 0.78, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <a href={pathname === "/" ? "#home" : "/#home"} className="site-header__brand" aria-label="Fold Theory home" onClick={pathname === "/" ? anchorHandler("#home") : undefined}>
           <Image className="site-header__logo-tile" src="/images/projects/fold-theory-wordmark.jpg" alt="" width={38} height={38} aria-hidden="true" unoptimized />
           <Wordmark />
         </a>
@@ -299,8 +304,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           {links.map((item) => (
             <a
               key={item.id}
-              href={item.href}
-              onClick={anchorHandler(item.href)}
+              href={pathname === "/" ? item.href : `/${item.href}`}
+              onClick={pathname === "/" ? anchorHandler(item.href) : undefined}
               className={activeSection === item.id ? "is-active" : ""}
               aria-current={activeSection === item.id ? "location" : undefined}
             >
@@ -308,7 +313,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
             </a>
           ))}
         </nav>
-        <a className="button button--header" href="#contact" onClick={anchorHandler("#contact")}>Start a Project <span aria-hidden="true">↗</span></a>
+        <a className="site-header__project-cta" href={pathname === "/" ? "#contact" : "/#contact"} onClick={pathname === "/" ? anchorHandler("#contact") : undefined}>
+          Start Your Project <span aria-hidden="true">↗︎</span>
+        </a>
         <button
           ref={menuTriggerRef}
           className="menu-trigger"
@@ -318,9 +325,10 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           onClick={() => setMenuOpen((value) => !value)}
         >
-          <span>{menuOpen ? "Close" : "Menu"}</span><i aria-hidden="true" />
+          <span className="menu-trigger__label">{menuOpen ? "Close" : "Menu"}</span>
+          <span className="menu-trigger__glyph" aria-hidden="true">•••</span>
         </button>
-      </header>
+      </motion.header>
 
       <AnimatePresence>
         {menuOpen && (
@@ -340,8 +348,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
               {links.map((item, index) => (
                 <div className="mobile-menu__mask" key={item.id}>
                   <motion.a
-                    href={item.href}
-                    onClick={anchorHandler(item.href, true)}
+                    href={pathname === "/" ? item.href : `/${item.href}`}
+                    onClick={pathname === "/" ? anchorHandler(item.href, true) : undefined}
                     initial={reduceMotion ? { opacity: 0 } : { y: "112%" }}
                     animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
                     transition={{ delay: reduceMotion ? 0 : 0.1 + index * 0.055, duration: reduceMotion ? 0.01 : 0.58, ease: [0.22, 1, 0.36, 1] }}
@@ -351,7 +359,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
                 </div>
               ))}
             </nav>
-            <a className="button button--light mobile-menu__cta" href="#contact" onClick={anchorHandler("#contact", true)}>Start a Project <span aria-hidden="true">↗</span></a>
+            <a className="button button--light mobile-menu__cta" href={pathname === "/" ? "#contact" : "/#contact"} onClick={pathname === "/" ? anchorHandler("#contact", true) : undefined}>Start a Project <span aria-hidden="true">↗</span></a>
             <div className="mobile-menu__meta">
               <span>New Delhi, India</span>
               <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">@fold.theory2 ↗</a>
@@ -367,8 +375,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         {showPersistentCta && (
           <motion.a
             className="persistent-project-cta"
-            href="#contact"
-            onClick={anchorHandler("#contact")}
+            href={pathname === "/" ? "#contact" : "/#contact"}
+            onClick={pathname === "/" ? anchorHandler("#contact") : undefined}
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
@@ -379,19 +387,97 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      <footer className="site-footer">
-        <div className="site-footer__top">
-          <div className="site-footer__brand">
-            <Image className="site-footer__logo" src="/images/projects/fold-theory-wordmark.jpg" alt="Fold Theory — Printing and Packaging" width={104} height={104} unoptimized />
-            <p>Brand identities, thoughtfully unfolded.</p>
+      <footer className="site-footer" aria-labelledby="footer-cta-title">
+        <div className="site-footer__monogram" aria-hidden="true">FT</div>
+        <div className="site-footer__inner">
+          <div className="site-footer__cta">
+            <motion.h2
+              id="footer-cta-title"
+              initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+              transition={{ duration: reduceMotion ? 0.01 : 0.7, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span>Ready to create packaging</span>
+              <span>people remember?</span>
+            </motion.h2>
+            <motion.a
+              className="site-footer__cta-button"
+              href={pathname === "/" ? "#contact" : "/#contact"}
+              onClick={pathname === "/" ? anchorHandler("#contact") : undefined}
+              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+              transition={{ delay: reduceMotion ? 0 : 0.15, duration: reduceMotion ? 0.01 : 0.58, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span>Start Your Project</span><i aria-hidden="true">↗︎</i>
+            </motion.a>
           </div>
-          <div className="site-footer__links">
-            <div><span>Explore</span>{links.map((item) => <a href={item.href} key={item.id} onClick={anchorHandler(item.href)}>{item.label}</a>)}</div>
-            <div><span>Connect</span><a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">Instagram ↗</a><small>New Delhi, India</small></div>
+
+          <div className="site-footer__main">
+            <motion.div
+              className="site-footer__brand"
+              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+              transition={{ duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <a className="site-footer__logo" href={pathname === "/" ? "#home" : "/#home"} onClick={pathname === "/" ? anchorHandler("#home") : undefined} aria-label="Fold Theory home">
+                <Wordmark light />
+              </a>
+              <p className="site-footer__descriptor">Independent Branding &amp;<br />Packaging Studio.</p>
+              <p>Helping brands create thoughtful packaging experiences through strategy, design and production.</p>
+            </motion.div>
+
+            <motion.div
+              className="site-footer__column"
+              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+              transition={{ delay: reduceMotion ? 0 : 0.08, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h3>Navigation</h3>
+              <nav aria-label="Footer navigation">
+                {[...links.slice(0, 3), { href: "#archive", id: "archive", label: "Project Archive" }, links[3]].map((item) => (
+                  <a href={pathname === "/" ? item.href : `/${item.href}`} key={item.id} onClick={pathname === "/" ? anchorHandler(item.href) : undefined}>{item.label}</a>
+                ))}
+              </nav>
+            </motion.div>
+
+            <motion.div
+              className="site-footer__column site-footer__contact"
+              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+              transition={{ delay: reduceMotion ? 0 : 0.16, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h3>Contact</h3>
+              <a href="mailto:hello@foldtheory.com">hello@foldtheory.com</a>
+              <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">Instagram ↗</a>
+              <span>New Delhi, India</span>
+              <small>Response within<br />1–2 business days</small>
+            </motion.div>
+
+            <motion.div
+              className="site-footer__column site-footer__statement"
+              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+              transition={{ delay: reduceMotion ? 0 : 0.24, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p>Thoughtfully crafted.<br />Beautifully produced.<br />Made to be remembered.</p>
+              <a className="site-footer__secondary-cta" href={pathname === "/" ? "#contact" : "/#contact"} onClick={pathname === "/" ? anchorHandler("#contact") : undefined}>
+                Start a Project <span aria-hidden="true">→</span>
+              </a>
+            </motion.div>
+          </div>
+
+          <div className="site-footer__bottom">
+            <span>© {new Date().getFullYear()} Fold Theory</span>
+            <span>Designed with intention.</span>
+            <span>All rights reserved.</span>
           </div>
         </div>
-        <div className="site-footer__bottom"><span>© {new Date().getFullYear()} Fold Theory</span><span>All rights reserved</span></div>
-        <div className="site-footer__crop" aria-hidden="true">FOLD THEORY</div>
       </footer>
     </>
   );
