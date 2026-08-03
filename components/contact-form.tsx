@@ -164,14 +164,46 @@ export function ContactForm() {
         className="form-success contact-success"
         role="status"
         tabIndex={-1}
-        initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduceMotion ? 0.01 : 0.62, ease }}
+        initial={reduceMotion ? false : { opacity: 0, y: 22, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: reduceMotion ? 0.01 : 0.7, ease }}
       >
-        <span className="contact-success__eyebrow">Enquiry received</span>
-        <h3>Thank you.</h3>
-        <p>Your project enquiry has been received.<br />We’ll get back to you within 1–2 business days.</p>
-        <a href="#work">Return to Work <span aria-hidden="true">→</span></a>
+        <div className="contact-success__content">
+          <motion.span
+            className="contact-success__eyebrow"
+            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: reduceMotion ? 0 : 0.04, duration: reduceMotion ? 0.01 : 0.56, ease }}
+          >
+            Enquiry received
+          </motion.span>
+          <motion.h3
+            className="contact-success__title"
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: reduceMotion ? 0 : 0.12, duration: reduceMotion ? 0.01 : 0.62, ease }}
+          >
+            Thank you.
+          </motion.h3>
+          <motion.p
+            className="contact-success__message"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: reduceMotion ? 0 : 0.2, duration: reduceMotion ? 0.01 : 0.62, ease }}
+          >
+            Your project enquiry has been received.
+            <br />
+            We’ll get back to you within 1–2 business days.
+          </motion.p>
+          <motion.div
+            className="contact-success__actions"
+            initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: reduceMotion ? 0 : 0.28, duration: reduceMotion ? 0.01 : 0.58, ease }}
+          >
+            <a href="#work">Return to Work <span aria-hidden="true">→</span></a>
+          </motion.div>
+        </div>
       </motion.div>
     );
   }

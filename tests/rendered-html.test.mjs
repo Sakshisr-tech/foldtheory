@@ -92,6 +92,14 @@ test("removed portfolio pages no longer resolve as separate routes", async () =>
   }
 });
 
+test("contact success state uses centered premium confirmation markup", async () => {
+  const contactForm = await readFile(new URL("../components/contact-form.tsx", import.meta.url), "utf8");
+
+  assert.match(contactForm, /contact-success__content/);
+  assert.match(contactForm, /contact-success__title/);
+  assert.match(contactForm, /contact-success__actions/);
+});
+
 test("enquiry handling validates input and stores accepted submissions in D1", async () => {
   const [route, store, migration] = await Promise.all([
     readFile(new URL("../app/api/enquiries/route.ts", import.meta.url), "utf8"),
