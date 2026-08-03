@@ -6005,15 +6005,16 @@ button {
     padding: calc(env(safe-area-inset-top) + 88px) clamp(1.1rem, 4.2vw, 1.7rem) calc(env(safe-area-inset-bottom) + 26px);
   }
 
-  .hero-mobile .hero-mobile__copy {
-    display: flex;
-    width: min(100%, 30rem);
-    align-items: flex-start;
-    flex-direction: column;
-    text-align: left;
-    padding: 0;
-    color: #edebeb;
-  }
+.hero-mobile .hero-mobile__copy {
+  display: flex;
+  width: min(100%, 30rem);
+  align-items: center;
+  flex-direction: column;
+  margin-inline: auto;
+  text-align: center;
+  padding: 0;
+  color: #edebeb;
+}
 
   .hero-mobile .hero-mobile__eyebrow {
     margin-bottom: 20px;
@@ -6022,13 +6023,15 @@ button {
     letter-spacing: 0.24em;
   }
 
-  .hero-mobile .hero-mobile__title {
-    max-width: 9ch;
-    color: #f4f4f4;
-    font-size: clamp(3.1rem, 10.8vw, 4.25rem);
-    line-height: 0.86;
-    text-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-  }
+.hero-mobile .hero-mobile__title {
+  width: 100%;
+  max-width: 16ch;
+  margin: 0 auto;
+  font-size: clamp(3rem, 12vw, 4.2rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-align: center;
+}
 
   .hero-mobile .hero-mobile__description {
     max-width: 33ch;
@@ -6044,13 +6047,13 @@ button {
     background: rgba(251, 244, 230, 0.92);
   }
 
-  .hero-mobile .hero-mobile__actions {
-    display: grid;
-    width: min(100%, 18rem);
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 20px;
-  }
+.hero-mobile .hero-mobile__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 32px auto 0;
+}
 
   .hero-mobile .split-hero__cta {
     width: 100%;
@@ -9912,10 +9915,13 @@ button {
       max(29px, env(safe-area-inset-bottom));
   }
 
-  .hero-mobile__copy {
-    width: 100%;
-    max-width: 390px;
-  }
+.hero-mobile__copy {
+  width: 100%;
+  max-width: 390px;
+  margin-inline: auto;
+  align-items: center;
+  text-align: center;
+}
 
   .hero-mobile__eyebrow {
     display: flex;
@@ -9976,29 +9982,43 @@ button {
     line-height: 1.52;
   }
 
-  .hero-mobile__cta {
-    display: flex;
-    width: 100%;
-    min-height: 56px;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 25px;
-    padding: 13px 22px;
-    border-radius: 999px;
-    background: #f8f3e9;
-    color: #30251f;
-    font-size: 13px;
-    font-weight: 680;
-    letter-spacing: 0.025em;
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.17);
-  }
+.hero-mobile__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 132px;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 10.5px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+.hero-mobile__cta--primary {
+  border: 1px solid #4a3830;
+  background: #4a3830;
+  color: #fffaf2;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.hero-mobile__cta--secondary {
+  border: 1px solid rgba(255, 250, 242, 0.55);
+  background: rgba(255, 250, 242, 0.92);
+  color: #3f332d;
+}
 
   .hero-mobile__cta span:last-child {
     color: var(--burgundy);
     font-family: var(--serif);
-    font-size: 18px;
+    font-size: 13px;
   }
+  .hero-mobile__cta--primary span:last-child {
+  color: #fffaf2;
 }
+}
+
 
 /* Compact phones: keep all essential hero content visible */
 @media (max-width: 720px) and (max-height: 719px) {
