@@ -6023,15 +6023,13 @@ button {
     letter-spacing: 0.24em;
   }
 
-.hero-mobile .hero-mobile__title {
-  width: 100%;
-  max-width: 16ch;
-  margin: 0 auto;
-  font-size: clamp(3rem, 12vw, 4.2rem);
-  line-height: 0.9;
-  letter-spacing: -0.05em;
-  text-align: center;
-}
+  .hero-mobile .hero-mobile__title {
+    max-width: 9ch;
+    color: #f4f4f4;
+    font-size: clamp(3.2rem, 13vw, 4.5rem);
+    line-height: 0.9;
+    text-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  }
 
   .hero-mobile .hero-mobile__description {
     max-width: 33ch;
@@ -10031,10 +10029,26 @@ button {
     margin-bottom: 13px;
   }
 
-  .hero-mobile__title {
-    font-size: clamp(43px, 11.8vw, 52px);
-    line-height: 0.94;
-  }
+.hero-mobile__title {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  font-size: clamp(36px, 9.5vw, 44px);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-align: center;
+}
+
+.hero-mobile__line {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.hero-mobile__line > span {
+  display: block;
+  white-space: nowrap;
+}
 
   .hero-mobile__description {
     margin-top: 15px;
