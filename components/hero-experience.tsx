@@ -88,133 +88,199 @@ export function HeroExperience() {
   };
 
   return (
-    <section
-      id="home"
-      ref={sectionRef}
-      className="split-hero split-hero--edge split-hero--mobile-immersive"
-      aria-labelledby="hero-title"
-    >
-      <div className="split-hero__grain" aria-hidden="true" />
-      <div className="split-hero__mobile-ambient" aria-hidden="true">
-        <div className="split-hero__mobile-image">
-          <Image
-            src="/images/projects/injectoplast-packaging-hero.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[58%_center]"
-            unoptimized
-          />
-        </div>
-        <div className="split-hero__mobile-overlay" />
-      </div>
-      <div className="split-hero__ghost-type" aria-hidden="true">
-        <span>Packaging</span>
-        <span>Branding</span>
-      </div>
-
-      <motion.div
-        className="split-hero__visual"
-        style={reduceMotion ? undefined : { scale: visualScale, y: visualY }}
-        initial={reduceMotion ? false : { opacity: 0, x: 34 }}
-        animate={{ opacity: imageReady ? 1 : 0, x: 0 }}
-        transition={{ duration: reduceMotion ? 0.01 : 1.2, delay: 0.16, ease }}
-        onPointerMove={handleImageMove}
-        onPointerLeave={resetImagePosition}
-      >
-        <motion.div
-          className="split-hero__float"
-          animate={reduceMotion ? { y: 0 } : { y: [0, -3, 0] }}
-          transition={
-            reduceMotion
-              ? { duration: 0.01 }
-              : { duration: 10.5, repeat: Infinity, ease: "easeInOut" }
-          }
-        >
-          <motion.div
-            className="split-hero__image-media"
-            style={reduceMotion ? undefined : { x: imageX, y: imageY }}
-          >
-            <Image
-              src="/images/projects/injectoplast-packaging-hero.png"
-              alt="Two custom cylindrical tea packages displayed in a warm interior setting"
-              fill
-              priority
-              sizes="(min-width: 1025px) 48vw, 100vw"
-              unoptimized
-              onLoad={() => setImageReady(true)}
-            />
-          </motion.div>
-        </motion.div>
-      </motion.div>
-
-      <div className="split-hero__shell">
-        <motion.div
-          className="split-hero__copy split-hero__copy--mobile-immersive"
-          style={reduceMotion ? undefined : { opacity: copyOpacity, y: copyY }}
-        >
-          <motion.p
-            className="split-hero__eyebrow"
-            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.16, duration: reduceMotion ? 0.01 : 0.66, ease }}
-          >
-            Independent Branding &amp; Packaging Studio
-          </motion.p>
-
-          <h1 id="hero-title" className="split-hero__title">
-            {headlineLines.map((line, index) => (
-              <span className="split-hero__line" key={line}>
-                <motion.span
-                  initial={reduceMotion ? false : { y: "112%" }}
-                  animate={{ y: 0 }}
-                  transition={{
-                    delay: 0.28 + index * 0.1,
-                    duration: reduceMotion ? 0.01 : 0.86,
-                    ease,
-                  }}
-                >
-                  {line}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
-
-          <motion.p
-            className="split-hero__description"
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.78, duration: reduceMotion ? 0.01 : 0.68, ease }}
-          >
-            Distinctive packaging for food, gifting and retail brands—crafted to make
-            every first touch feel unforgettable.
-          </motion.p>
-
-          <motion.span
-            className="split-hero__divider"
-            initial={reduceMotion ? false : { opacity: 0, scaleX: 0 }}
-            animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ delay: 0.9, duration: reduceMotion ? 0.01 : 0.56, ease }}
-            aria-hidden="true"
-          />
+    <section id="home" ref={sectionRef} className="relative" aria-labelledby="hero-title">
+      <div className="hidden lg:block">
+        <section className="split-hero split-hero--edge" aria-labelledby="hero-title">
+          <div className="split-hero__grain" aria-hidden="true" />
+          <div className="split-hero__ghost-type" aria-hidden="true">
+            <span>Packaging</span>
+            <span>Branding</span>
+          </div>
 
           <motion.div
-            className="split-hero__actions"
-            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.98, duration: reduceMotion ? 0.01 : 0.68, ease }}
+            className="split-hero__visual"
+            style={reduceMotion ? undefined : { scale: visualScale, y: visualY }}
+            initial={reduceMotion ? false : { opacity: 0, x: 34 }}
+            animate={{ opacity: imageReady ? 1 : 0, x: 0 }}
+            transition={{ duration: reduceMotion ? 0.01 : 1.2, delay: 0.16, ease }}
+            onPointerMove={handleImageMove}
+            onPointerLeave={resetImagePosition}
           >
-            <MagneticLink href="#contact" variant="primary">
-              Start Your Project
-            </MagneticLink>
-            <MagneticLink href="#work" variant="secondary">
-              View Our Work
-            </MagneticLink>
+            <motion.div
+              className="split-hero__float"
+              animate={reduceMotion ? { y: 0 } : { y: [0, -3, 0] }}
+              transition={
+                reduceMotion
+                  ? { duration: 0.01 }
+                  : { duration: 10.5, repeat: Infinity, ease: "easeInOut" }
+              }
+            >
+              <motion.div
+                className="split-hero__image-media"
+                style={reduceMotion ? undefined : { x: imageX, y: imageY }}
+              >
+                <Image
+                  src="/images/projects/injectoplast-packaging-hero.png"
+                  alt="Two custom cylindrical tea packages displayed in a warm interior setting"
+                  fill
+                  priority
+                  sizes="(min-width: 1025px) 48vw, 100vw"
+                  unoptimized
+                  onLoad={() => setImageReady(true)}
+                />
+              </motion.div>
+            </motion.div>
           </motion.div>
-        </motion.div>
+
+          <div className="split-hero__shell">
+            <motion.div
+              className="split-hero__copy"
+              style={reduceMotion ? undefined : { opacity: copyOpacity, y: copyY }}
+            >
+              <motion.p
+                className="split-hero__eyebrow"
+                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.16, duration: reduceMotion ? 0.01 : 0.66, ease }}
+              >
+                Independent Branding &amp; Packaging Studio
+              </motion.p>
+
+              <h1 id="hero-title" className="split-hero__title">
+                {headlineLines.map((line, index) => (
+                  <span className="split-hero__line" key={line}>
+                    <motion.span
+                      initial={reduceMotion ? false : { y: "112%" }}
+                      animate={{ y: 0 }}
+                      transition={{
+                        delay: 0.28 + index * 0.1,
+                        duration: reduceMotion ? 0.01 : 0.86,
+                        ease,
+                      }}
+                    >
+                      {line}
+                    </motion.span>
+                  </span>
+                ))}
+              </h1>
+
+              <motion.p
+                className="split-hero__description"
+                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.78, duration: reduceMotion ? 0.01 : 0.68, ease }}
+              >
+                Distinctive packaging for food, gifting and retail brands—crafted to make
+                every first touch feel unforgettable.
+              </motion.p>
+
+              <motion.span
+                className="split-hero__divider"
+                initial={reduceMotion ? false : { opacity: 0, scaleX: 0 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ delay: 0.9, duration: reduceMotion ? 0.01 : 0.56, ease }}
+                aria-hidden="true"
+              />
+
+              <motion.div
+                className="split-hero__actions"
+                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.98, duration: reduceMotion ? 0.01 : 0.68, ease }}
+              >
+                <MagneticLink href="#contact" variant="primary">
+                  Start Your Project
+                </MagneticLink>
+                <MagneticLink href="#work" variant="secondary">
+                  View Our Work
+                </MagneticLink>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
       </div>
 
+      <div className="block lg:hidden">
+        <section className="hero-mobile" aria-labelledby="hero-title">
+          <div className="hero-mobile__ambient" aria-hidden="true">
+            <div className="hero-mobile__image">
+              <Image
+                src="/images/projects/injectoplast-packaging-hero.png"
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-[58%_center]"
+                unoptimized
+              />
+            </div>
+            <div className="hero-mobile__overlay" />
+          </div>
+
+          <div className="split-hero__shell hero-mobile__shell">
+            <motion.div
+              className="split-hero__copy hero-mobile__copy"
+              style={reduceMotion ? undefined : { opacity: copyOpacity, y: copyY }}
+            >
+              <motion.p
+                className="split-hero__eyebrow hero-mobile__eyebrow"
+                initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.16, duration: reduceMotion ? 0.01 : 0.66, ease }}
+              >
+                Independent Branding &amp; Packaging Studio
+              </motion.p>
+
+              <h1 id="hero-title" className="split-hero__title hero-mobile__title">
+                {headlineLines.map((line, index) => (
+                  <span className="split-hero__line" key={line}>
+                    <motion.span
+                      initial={reduceMotion ? false : { y: "112%" }}
+                      animate={{ y: 0 }}
+                      transition={{
+                        delay: 0.28 + index * 0.1,
+                        duration: reduceMotion ? 0.01 : 0.86,
+                        ease,
+                      }}
+                    >
+                      {line}
+                    </motion.span>
+                  </span>
+                ))}
+              </h1>
+
+              <motion.p
+                className="split-hero__description hero-mobile__description"
+                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.78, duration: reduceMotion ? 0.01 : 0.68, ease }}
+              >
+                Distinctive packaging for food, gifting and retail brands—crafted to make
+                every first touch feel unforgettable.
+              </motion.p>
+
+              <motion.span
+                className="split-hero__divider hero-mobile__divider"
+                initial={reduceMotion ? false : { opacity: 0, scaleX: 0 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ delay: 0.9, duration: reduceMotion ? 0.01 : 0.56, ease }}
+                aria-hidden="true"
+              />
+
+              <motion.div
+                className="split-hero__actions hero-mobile__actions"
+                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.98, duration: reduceMotion ? 0.01 : 0.68, ease }}
+              >
+                <MagneticLink href="#contact" variant="primary">
+                  Start Your Project
+                </MagneticLink>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+      </div>
     </section>
   );
 }

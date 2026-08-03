@@ -55,7 +55,7 @@ function Wordmark({ light = false }: { light?: boolean }) {
   return (
     <span className={`wordmark ${light ? "wordmark--light" : ""}`}>
       <span>FOLD THEORY</span>
-      <small>PRINTING &amp; PACKAGING</small>
+      <small>BY SUN PRINT &amp; PACKAGING</small>
     </span>
   );
 }

@@ -15,11 +15,16 @@ const editorialLayouts = [
   "portrait-right",
 ] as const;
 
-export function ProjectShowcase() {
+type ProjectShowcaseProps = {
+  variant: "desktop" | "mobile";
+};
+
+export function ProjectShowcase({ variant }: ProjectShowcaseProps) {
   const reduceMotion = useReducedMotion();
+  const wrapperClass = `selected-work__editorial-grid selected-work__editorial-grid--${variant}`;
 
   return (
-    <div className="selected-work__editorial-grid">
+    <div className={wrapperClass}>
       {selectedProjects.map((project, index) => {
         const editorialLayout = editorialLayouts[index] ?? "portrait-right";
 

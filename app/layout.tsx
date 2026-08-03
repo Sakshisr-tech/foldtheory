@@ -20,10 +20,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const metadataBase = new URL(`${protocol}://${host}`);
   const socialImage = new URL("/og.png", metadataBase).toString();
 
-  return {
+    return {
     metadataBase,
     title: {
-      default: "Fold Theory — Branding & Packaging Studio in New Delhi",
+      default: "Fold Theory by Sun Print & Packaging — Branding & Packaging Studio in New Delhi",
       template: "%s — Fold Theory",
     },
     description:
@@ -33,15 +33,15 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "en_IN",
       url: "/",
-      siteName: "Fold Theory",
-      title: "Fold Theory — Branding & Packaging Studio in New Delhi",
+      siteName: "Fold Theory by Sun Print & Packaging",
+      title: "Fold Theory by Sun Print & Packaging — Branding & Packaging Studio in New Delhi",
       description:
         "Thoughtful brand identities, packaging systems and printed experiences for food, hospitality, lifestyle and consumer brands.",
-      images: [{ url: socialImage, width: 1200, height: 630, alt: "Fold Theory — branding, packaging and print" }],
+      images: [{ url: socialImage, width: 1200, height: 630, alt: "Fold Theory by Sun Print & Packaging — branding, packaging and print" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Fold Theory — Branding & Packaging Studio",
+      title: "Fold Theory by Sun Print & Packaging — Branding & Packaging Studio",
       description:
         "Brand identities, packaging systems and printed experiences made tangible in New Delhi.",
       images: [socialImage],

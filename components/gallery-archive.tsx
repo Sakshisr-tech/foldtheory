@@ -89,14 +89,7 @@ export function GalleryArchive() {
           </motion.aside>
         </header>
 
-        <motion.div
-          className="project-archive__divider"
-          aria-hidden="true"
-          initial={reduceMotion ? false : { scaleX: 0 }}
-          whileInView={reduceMotion ? undefined : { scaleX: 1 }}
-          viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-          transition={{ delay: reduceMotion ? 0 : 0.3, duration: reduceMotion ? 0.01 : 0.82, ease }}
-        />
+        {/* divider removed to let archive flow into Studio Process without a horizontal line */}
 
         <div className="project-archive__masonry" role="list" aria-label="Fold Theory project archive">
           {archiveProjects.map((project, index) => (

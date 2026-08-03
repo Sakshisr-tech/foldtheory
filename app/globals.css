@@ -7880,7 +7880,6 @@ button {
   overflow: hidden;
   padding-top: 80px;
   padding-bottom: clamp(100px, 8vw, 132px);
-  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--paper);
 }
@@ -8333,7 +8332,7 @@ button {
 .project-archive.section--archive {
   padding: clamp(54px, 4.4vw, 72px) 0 clamp(96px, 7vw, 120px);
   overflow: hidden;
-  background: var(--paper);
+  background: #F7F2E8;
 }
 
 .project-archive__header {
@@ -8352,7 +8351,7 @@ button {
   z-index: -1;
   top: 44%;
   left: -0.055em;
-  color: rgba(54, 34, 27, 0.027);
+  color: rgba(54, 34, 27, 0.07);
   font-family: var(--serif);
   font-size: clamp(190px, 19vw, 310px);
   font-weight: 400;

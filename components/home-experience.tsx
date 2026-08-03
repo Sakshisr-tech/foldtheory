@@ -30,7 +30,12 @@ export function HomeExperience() {
       <section id="work" className="section section--work" aria-labelledby="work-title">
         <div className="section-shell">
           <SelectedWorkIndex />
-          <ProjectShowcase />
+          <div className="hidden lg:block">
+            <ProjectShowcase variant="desktop" />
+          </div>
+          <div className="block lg:hidden">
+            <ProjectShowcase variant="mobile" />
+          </div>
         </div>
       </section>
 
