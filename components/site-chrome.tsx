@@ -13,6 +13,20 @@ const links = [
   { href: "#contact", id: "contact", label: "Contact" },
 ] as const;
 
+type SectionId =
+  | "home"
+  | "introduction"
+  | "work"
+  | "services"
+  | "featured"
+  | "studio"
+  | "archive"
+  | "process"
+  | "about"
+  | "trust"
+  | "faq"
+  | "contact";
+
 const observedSections = [
   ["home", "home"],
   ["introduction", "home"],
@@ -51,8 +65,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const reduceMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const [activeSection, setActiveSection] = useState<SectionId>("home");
   const [showPersistentCta, setShowPersistentCta] = useState(false);
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
@@ -65,6 +80,10 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     onVisibility();
     document.addEventListener("visibilitychange", onVisibility);
     return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
   }, []);
 
   useEffect(() => {
@@ -182,7 +201,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const mapping = new Map(observedSections);
+    const mapping = new Map<string, SectionId>(observedSections);
     const visible = new Map<string, IntersectionObserverEntry>();
     const observer = new IntersectionObserver(
       (entries) => {
@@ -193,7 +212,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         const nearest = [...visible.values()].sort(
           (a, b) => Math.abs(a.boundingClientRect.top - window.innerHeight * 0.28) - Math.abs(b.boundingClientRect.top - window.innerHeight * 0.28),
         )[0];
-        if (nearest) setActiveSection(mapping.get(nearest.target.id) ?? "home");
+        const nextSection = nearest ? (mapping.has(nearest.target.id) ? mapping.get(nearest.target.id)! : "home") : "home";
+        setActiveSection(nextSection);
       },
       { rootMargin: "-18% 0px -58% 0px", threshold: [0, 0.2, 0.6] },
     );
@@ -473,7 +493,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="site-footer__bottom">
-            <span>© {new Date().getFullYear()} Fold Theory</span>
+            <span>© {currentYear ?? 2026} Fold Theory</span>
             <span>Designed with intention.</span>
             <span>All rights reserved.</span>
           </div>
