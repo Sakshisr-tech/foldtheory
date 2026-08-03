@@ -10077,3 +10077,69 @@ button {
     transition-duration: 0.01ms;
   }
 }
+/* Final mobile hero layout override */
+@media (max-width: 1023px) {
+  .hero-mobile .hero-mobile__shell {
+    display: flex;
+    width: 100%;
+    min-height: 100svh;
+    align-items: flex-start;
+    justify-content: center;
+    padding:
+      calc(max(12px, env(safe-area-inset-top)) + 145px)
+      20px
+      max(24px, env(safe-area-inset-bottom));
+  }
+
+  .hero-mobile .hero-mobile__copy {
+    width: min(100%, 30rem);
+    margin: 0 auto;
+    transform: none;
+  }
+
+  .hero-mobile .hero-mobile__title {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: clamp(40px, 10.8vw, 50px);
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    text-align: center;
+  }
+
+  .hero-mobile .hero-mobile__line {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .hero-mobile .hero-mobile__line > span {
+    display: block;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 1023px) {
+  .hero-mobile {
+    height: auto;
+    min-height: 0;
+  }
+
+  .hero-mobile .hero-mobile__shell {
+    display: flex;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    align-items: flex-start;
+    justify-content: center;
+    padding:
+      calc(max(12px, env(safe-area-inset-top)) + 145px)
+      20px
+      max(42px, env(safe-area-inset-bottom));
+  }
+
+  .hero-mobile .hero-mobile__copy {
+    width: min(100%, 30rem);
+    margin: 0 auto;
+    transform: none;
+  }
+}
