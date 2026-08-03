@@ -159,7 +159,12 @@ export function SelectedWorkIndex() {
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
       transition={{ duration: reduceMotion ? 0.01 : 0.58, ease }}
     >
-      <h2 id="work-title">Selected work</h2>
+      <div>
+        <h2 id="work-title">Selected work</h2>
+        <p className="selected-work__intro-copy">
+          A curated selection of custom packaging, branding and print work.
+        </p>
+      </div>
       <a className="selected-work__all" href="#archive">
         View All Projects <span aria-hidden="true">&#8594;</span>
       </a>

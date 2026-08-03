@@ -261,7 +261,10 @@ const selectedProjectOrder = [
 
 export const selectedProjects = selectedProjectOrder
   .map((id) => projects.find((project) => project.id === id))
-  .filter((project): project is Project => Boolean(project?.selected));
+  .filter(
+    (project): project is NonNullable<typeof project> =>
+      project !== undefined && project.selected
+  );
 export const featuredProject = projects.find((project) => project.featured) ?? projects[0];
 
 export function getProjectById(id: string): Project | undefined {

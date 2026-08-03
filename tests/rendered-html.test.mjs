@@ -53,6 +53,12 @@ test("server-renders the complete one-page Fold Theory experience", async () => 
   assert.doesNotMatch(html, /Client perspective|Email to be confirmed|codex-preview|react-loading-skeleton/i);
 });
 
+test("hero uses a dedicated mobile-first immersive treatment", async () => {
+  const hero = await readFile(new URL("../components/hero-experience.tsx", import.meta.url), "utf8");
+  assert.match(hero, /split-hero--mobile-immersive/);
+  assert.match(hero, /split-hero__mobile-overlay/);
+});
+
 test("keeps static page composition on the server and editable content in data files", async () => {
   const [page, home, chrome, projects, testimonials, hosting] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),

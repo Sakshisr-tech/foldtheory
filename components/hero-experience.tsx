@@ -88,8 +88,27 @@ export function HeroExperience() {
   };
 
   return (
-    <section id="home" ref={sectionRef} className="split-hero split-hero--edge" aria-labelledby="hero-title">
+    <section
+      id="home"
+      ref={sectionRef}
+      className="split-hero split-hero--edge split-hero--mobile-immersive"
+      aria-labelledby="hero-title"
+    >
       <div className="split-hero__grain" aria-hidden="true" />
+      <div className="split-hero__mobile-ambient" aria-hidden="true">
+        <div className="split-hero__mobile-image">
+          <Image
+            src="/images/projects/injectoplast-packaging-hero.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[58%_center]"
+            unoptimized
+          />
+        </div>
+        <div className="split-hero__mobile-overlay" />
+      </div>
       <div className="split-hero__ghost-type" aria-hidden="true">
         <span>Packaging</span>
         <span>Branding</span>
@@ -132,7 +151,7 @@ export function HeroExperience() {
 
       <div className="split-hero__shell">
         <motion.div
-          className="split-hero__copy"
+          className="split-hero__copy split-hero__copy--mobile-immersive"
           style={reduceMotion ? undefined : { opacity: copyOpacity, y: copyY }}
         >
           <motion.p
