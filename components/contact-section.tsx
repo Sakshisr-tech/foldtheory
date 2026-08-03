@@ -68,7 +68,7 @@ export function ContactSection() {
             >
               <div>
                 <dt>Email</dt>
-                <dd><a href="mailto:hello@foldtheory.com">hello@foldtheory.com</a></dd>
+                <dd><a href="mailto:foldtheory2@gmail.com">foldtheory2@gmail.com</a></dd>
               </div>
               <div>
                 <dt>Instagram</dt>
