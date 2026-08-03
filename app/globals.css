@@ -545,24 +545,15 @@ button {
   font-size: 13px;
   font-weight: 650;
 }
-
-.menu-trigger i {
-  position: relative;
-  width: 18px;
-  height: 1px;
-  background: currentColor;
+.menu-trigger__label
+.menu-trigger__glyph {
+  display: block;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
 }
-
-.menu-trigger i::after {
-  position: absolute;
-  top: 5px;
-  right: 0;
-  width: 12px;
-  height: 1px;
-  content: "";
-  background: currentColor;
-}
-
 /* Mobile menu */
 .mobile-menu {
   position: fixed;
@@ -3639,16 +3630,13 @@ button {
 .menu-trigger {
   position: relative;
   display: grid;
-  width: 36px;
-  min-width: 36px;
-  height: 36px;
-  min-height: 36px;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
   place-items: center;
   padding: 0;
-  border: 1px solid rgba(56, 47, 40, 0.34);
   border-radius: 50%;
-  color: #3f3934;
-  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
 
 .menu-trigger:hover,
@@ -6009,13 +5997,14 @@ button {
 }
 
   .hero-mobile .hero-mobile__description {
-    max-width: 33ch;
-    margin-top: 12px;
-    color: #ffffff;
-    font-size: 14px;
-    line-height: 1.6;
-    text-shadow: 0 10px 22px rgba(0, 0, 0, 0.36);
-  }
+  max-width: 31ch;
+  margin-top: 24px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.55;
+  text-align: center;
+  text-shadow: 0 10px 22px rgba(0, 0, 0, 0.36);
+}
 
   .hero-mobile .hero-mobile__divider {
     margin-top: 20px;
@@ -10058,7 +10047,7 @@ button {
     align-items: flex-start;
     justify-content: center;
     padding:
-      calc(max(12px, env(safe-area-inset-top)) + 145px)
+      calc(max(12px, env(safe-area-inset-top)) + 9px)
       20px
       max(24px, env(safe-area-inset-bottom));
   }
@@ -10097,17 +10086,17 @@ button {
   }
 
   .hero-mobile .hero-mobile__shell {
-    display: flex;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    align-items: flex-start;
-    justify-content: center;
-    padding:
-      calc(max(12px, env(safe-area-inset-top)) + 145px)
-      20px
-      max(42px, env(safe-area-inset-bottom));
-  }
+  display: flex;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  align-items: flex-start;
+  justify-content: center;
+  padding:
+    calc(max(12px, env(safe-area-inset-top)) + 115px)
+    20px
+    max(42px, env(safe-area-inset-bottom));
+}
 
   .hero-mobile .hero-mobile__copy {
     width: min(100%, 30rem);
