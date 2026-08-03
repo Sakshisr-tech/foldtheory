@@ -336,18 +336,27 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <a className="site-header__project-cta" href={pathname === "/" ? "#contact" : "/#contact"} onClick={pathname === "/" ? anchorHandler("#contact") : undefined}>
           Start Your Project <span aria-hidden="true">↗︎</span>
         </a>
-        <button
-          ref={menuTriggerRef}
-          className="menu-trigger"
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-          onClick={() => setMenuOpen((value) => !value)}
-        >
-          <span className="menu-trigger__label">{menuOpen ? "Close" : "Menu"}</span>
-          <span className="menu-trigger__glyph" aria-hidden="true">•••</span>
-        </button>
+<button
+  ref={menuTriggerRef}
+  className={`menu-trigger ${menuOpen ? "is-open" : ""}`}
+  type="button"
+  aria-expanded={menuOpen}
+  aria-controls="mobile-menu"
+  aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+  onClick={() => setMenuOpen((value) => !value)}
+>
+  <span className="sr-only">
+    {menuOpen ? "Close menu" : "Open menu"}
+  </span>
+
+  <span
+    className="menu-trigger__lines"
+    aria-hidden="true"
+  >
+    <i />
+    <i />
+  </span>
+</button>
       </motion.header>
 
       <AnimatePresence>
