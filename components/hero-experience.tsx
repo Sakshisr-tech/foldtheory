@@ -26,8 +26,9 @@ const desktopHeadlineLines = [
 ];
 
 const mobileHeadlineLines = [
-  "Brands people remember",
-  "before they’re opened.",
+  "Brands people",
+  "remember before",
+  "they’re opened.",
 ];
 
 type MagneticLinkProps = {

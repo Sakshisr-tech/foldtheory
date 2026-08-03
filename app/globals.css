@@ -6014,6 +6014,7 @@ button {
   text-align: center;
   padding: 0;
   color: #edebeb;
+
 }
 
   .hero-mobile .hero-mobile__eyebrow {
@@ -6024,12 +6025,16 @@ button {
   }
 
   .hero-mobile .hero-mobile__title {
-    max-width: 9ch;
-    color: #f4f4f4;
-    font-size: clamp(3.2rem, 13vw, 4.5rem);
-    line-height: 0.9;
-    text-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-  }
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  color: #f4f4f4;
+  font-size: clamp(36px, 9.5vw, 44px);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-align: center;
+  text-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
 
   .hero-mobile .hero-mobile__description {
     max-width: 33ch;
@@ -9901,24 +9906,28 @@ button {
   }
 
   .hero-mobile__shell {
-    position: relative;
-    z-index: 4;
-    display: flex;
-    width: 100%;
-    min-height: 100svh;
-    align-items: flex-end;
-    padding:
-      calc(max(12px, env(safe-area-inset-top)) + 94px)
-      23px
-      max(29px, env(safe-area-inset-bottom));
-  }
+  position: relative;
+  z-index: 4;
+  display: flex;
+  width: 100%;
+  min-height: 100svh;
+
+  align-items: center;          /* was flex-end */
+
+  padding:
+    calc(max(12px, env(safe-area-inset-top)) + 62px)
+    23px
+    max(29px, env(safe-area-inset-bottom));
+}
 
 .hero-mobile__copy {
-  width: 100%;
-  max-width: 390px;
-  margin-inline: auto;
+  width: min(100%, 30rem);
+  display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
+
+  transform: translateY(-65px);
 }
 
   .hero-mobile__eyebrow {
@@ -9961,16 +9970,17 @@ button {
     letter-spacing: -0.047em;
   }
 
-  .hero-mobile__line {
-    display: block;
-    overflow: hidden;
-    padding-bottom: 0.055em;
-  }
+  .hero-mobile .hero-mobile__line {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  padding-bottom: 0.055em;
+}
 
-  .hero-mobile__line > span {
-    display: block;
-    white-space: 100%;
-  }
+.hero-mobile .hero-mobile__line > span {
+  display: block;
+  white-space: nowrap;
+}
 
   .hero-mobile__description {
     max-width: 325px;
