@@ -3340,11 +3340,35 @@ button {
   }
 
   .site-footer__main {
-    grid-template-columns: 1fr;
-    gap: 48px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 24px;
     margin-top: 56px;
     padding: 56px 0;
-  }
+    align-items: start;
+}
+
+.site-footer__brand {
+    grid-column: 1 / -1;
+}
+
+.site-footer__statement {
+    grid-column: 1 / -1;
+}
+
+.site-footer__column {
+  min-width: 0;
+}
+
+.site-footer__column h3 {
+  margin-top: 0;
+}
+
+.site-footer__contact a,
+.site-footer__contact span,
+.site-footer__contact small {
+  overflow-wrap: anywhere;
+}
 
   .site-footer__brand > p:last-child {
     max-width: 38ch;
