@@ -50,10 +50,10 @@ const bombaaImage: ProjectImage = {
 };
 
 const khoyaBoxesImage: ProjectImage = {
-  src: "/images/projects/production-rigid-boxes.jpg",
-  alt: "Khoya presentation boxes arranged on a production worktable",
-  width: 1440,
-  height: 1440,
+  src: "/images/projects/khoya-presentation-boxes.png",
+  alt: "Pink sunburst and brown Khoya Skin Perfume presentation boxes on a production worktable",
+  width: 1024,
+  height: 768,
 };
 
 const khoyaMugsImage: ProjectImage = {
@@ -71,10 +71,24 @@ const icePopImage: ProjectImage = {
 };
 
 const presentationGiftingImage: ProjectImage = {
-  src: "/images/projects/green-gift-boxes.jpg",
-  alt: "Deep green rigid presentation boxes from the Fold Theory studio archive",
-  width: 1440,
-  height: 1440,
+  src: "/images/projects/green-gift-boxes.png",
+  alt: "Deep green Naanche rigid presentation box with gold foil logo on travertine",
+  width: 1024,
+  height: 1024,
+};
+
+const headsUpForTailsImage: ProjectImage = {
+  src: "/images/projects/heads-up-for-tails-bag.png",
+  alt: "Orange Heads Up For Tails branded retail shopping bag with black rope handles",
+  width: 768,
+  height: 1024,
+};
+
+const radissonBluImage: ProjectImage = {
+  src: "/images/projects/radisson-blu-packaging.png",
+  alt: "Yellow and brown Radisson BLU custom food packaging with illustrated pattern and carry handle",
+  width: 819,
+  height: 1024,
 };
 
 export const projects = [
@@ -180,9 +194,9 @@ export const projects = [
     id: "ice-pop",
     number: "03",
     title: "Ice Pop",
-    category: "Carton packaging",
+    category: "Food Packaging",
     industry: "Food & Beverage",
-    summary: "Colour-forward cartons with a tactile, shelf-ready presentation.",
+    summary: "Colour-forward retail packaging designed to stand out on the shelf while preserving product freshness and strengthening brand recognition.",
     overview:
       "A printed carton application from Fold Theory's official studio archive for Ice Pop.",
     challenge:
@@ -218,7 +232,7 @@ export const projects = [
     packagingDetails: ["Ceramic mugs", "Custom surface printing", "Giftable brand objects"],
     coverImage: khoyaMugsImage,
     detailImages: [khoyaMugsImage],
-    layout: "closing",
+    layout: "split",
     selected: true,
     featured: false,
   },
@@ -241,6 +255,54 @@ export const projects = [
     packagingDetails: ["Rigid box construction", "Textured paper wrap", "Foil brand detail"],
     coverImage: presentationGiftingImage,
     detailImages: [presentationGiftingImage],
+    layout: "fullBleed",
+    selected: true,
+    featured: false,
+  },
+  {
+    id: "heads-up-for-tails",
+    number: "08",
+    title: "Heads Up For Tails",
+    category: "Retail Packaging",
+    industry: "Retail",
+    summary:
+      "Premium branded carry bag production with bold colour, refined print detailing, and a strong retail presence.",
+    overview:
+      "A branded retail carry bag produced for Heads Up For Tails, built around bold colour and clear print detailing for a strong shelf-to-street presence.",
+    challenge:
+      "Deliver a high-impact retail bag that feels premium while remaining practical for everyday brand use.",
+    solution:
+      "Saturated colour, confident brand placement and clean print finishing create a bag that reads clearly from a distance and holds up in hand.",
+    outcome:
+      "A produced retail carry bag that reinforces brand recognition across stores and customer journeys.",
+    services: ["Retail Packaging", "Print", "Production"],
+    packagingDetails: ["Branded paper carry bag", "Bold colour field", "Refined print detailing"],
+    coverImage: headsUpForTailsImage,
+    detailImages: [headsUpForTailsImage],
+    layout: "feature",
+    selected: true,
+    featured: false,
+  },
+  {
+    id: "radisson-blu",
+    number: "09",
+    title: "Radisson BLU",
+    category: "Hospitality Packaging",
+    industry: "Hospitality",
+    summary:
+      "Custom food packaging created for a refined hospitality experience, combining practical structure with premium presentation.",
+    overview:
+      "Custom hospitality food packaging for Radisson BLU, designed to feel considered at the table while remaining practical in service.",
+    challenge:
+      "Create a distinctive hospitality format that protects food and still feels premium in presentation.",
+    solution:
+      "A structured carry format, contrasting colour panels and illustrated detailing give the pack presence without sacrificing usability.",
+    outcome:
+      "A produced hospitality packaging piece that supports a refined in-hotel food experience.",
+    services: ["Hospitality Packaging", "Print", "Production"],
+    packagingDetails: ["Custom structured pack", "Illustrated panels", "Premium brand presentation"],
+    coverImage: radissonBluImage,
+    detailImages: [radissonBluImage],
     layout: "portrait",
     selected: true,
     featured: false,
@@ -257,6 +319,8 @@ const selectedProjectOrder = [
   "khoya",
   "secret-ingredient-khoya",
   "presentation-gifting",
+  "heads-up-for-tails",
+  "radisson-blu",
 ] as const;
 
 export const selectedProjects = selectedProjectOrder

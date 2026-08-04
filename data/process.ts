@@ -10,24 +10,28 @@ export const processSteps = [
     id: "discover",
     number: "01",
     title: "Discover",
-    description: "Understanding your brand, audience, product and goals.",
+    description:
+      "Understanding your business, product, packaging goals, quantities, and production requirements.",
   },
   {
-    id: "design",
+    id: "plan",
     number: "02",
-    title: "Design",
-    description: "Exploring concepts, structure, materials and visual identity.",
+    title: "Plan",
+    description:
+      "Selecting the right packaging structure, materials, printing methods, finishes and production specifications.",
   },
   {
     id: "refine",
     number: "03",
     title: "Refine",
-    description: "Collaborative feedback, prototyping and production preparation.",
+    description:
+      "Sampling, prototyping, quality checks and final approvals before production.",
   },
   {
     id: "deliver",
     number: "04",
     title: "Deliver",
-    description: "Premium production guidance and packaging ready for launch.",
+    description:
+      "Premium production, careful finishing, quality assurance, and reliable delivery.",
   },
 ] as const satisfies readonly ProcessStep[];

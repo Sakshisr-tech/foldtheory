@@ -1,35 +1,39 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const statementLines = [
-  "Good packaging is",
-  "the first physical",
-  "conversation between",
-  "a brand and its audience.",
+
+const introParagraphs = [
+  "For over three decades, Sun Print & Packaging has been helping businesses bring their ideas to life through premium printing and packaging solutions. What began as a small operation with just a handful of clients has grown into a trusted production partner for some of the most recognized restaurants, hospitality brands, and businesses across India and beyond.",
+  "As the industry continues to evolve, so does our responsibility. We believe great packaging should not come at the expense of the environment. That's why we focus on sustainable packaging solutions, working primarily with paper and cardboard while avoiding plastic wherever possible.",
 ] as const;
-const principles = [
+
+const facts = [
+  { value: "34+", label: "Years of Experience" },
+  { value: "India & Beyond", label: "International Reach" },
+  { value: "Paper First", label: "Sustainable Materials" },
+  { value: "Built for Brands", label: "Custom Production" },
+] as const;
+
+const storyBlocks = [
   {
+    id: "journey",
     number: "01",
-    title: "Thoughtful Strategy",
-    description: "Every decision begins with clarity, context and purpose.",
+    label: "Our Journey",
+    text: "Our journey began in event printing, where precision, deadlines, and execution were everything. As the industry evolved, so did we, expanding into premium food packaging, commercial printing, branding materials, and custom production solutions designed for businesses that value quality.",
   },
   {
+    id: "reach",
     number: "02",
-    title: "Visual Identity",
-    description: "Distinctive systems designed for recognition and longevity.",
+    label: "Global Reach",
+    text: "Over the years, our work has travelled far beyond our workshop. From serving leading multi-location restaurant brands in Delhi to delivering projects for clients in the UK, Australia, Dubai, and other international markets, we've remained committed to quality without compromise, attention to detail, and reliable delivery.",
   },
   {
+    id: "philosophy",
     number: "03",
-    title: "Material Craft",
-    description: "Packaging that feels as considered as it looks.",
-  },
-  {
-    number: "04",
-    title: "Production Support",
-    description: "Creative intent carried faithfully into manufacturing.",
+    label: "Our Philosophy",
+    text: "At Fold Theory by Sun Print & Packaging, every project is approached with the understanding that great packaging is more than a container. It represents a brand, creates memorable first impressions, and influences how customers experience a business.",
   },
 ] as const;
 
@@ -39,116 +43,130 @@ export function StudioPhilosophy() {
   const highlightContactAfterScroll = () => {
     window.setTimeout(() => {
       window.dispatchEvent(new Event("fold-theory:highlight-contact"));
-    }, reduceMotion ? 0 : 1050);
+    }, reduceMotion ? 0 : 850);
   };
 
   return (
-    <section id="studio" className="section section--philosophy studio-about" aria-labelledby="studio-title">
-      <div className="section-shell">
-        <div className="studio-about__intro-grid">
-          <div className="studio-about__copy">
-            <motion.div
-              className="section-label studio-about__label"
-              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-              transition={{ duration: reduceMotion ? 0.01 : 0.6, ease }}
-            >
-              <span>04</span>
-              <span>Studio philosophy</span>
-            </motion.div>
+    <section id="about" className="studio-about" aria-labelledby="studio-title">
+      <div className="studio-about__watermark" aria-hidden="true">
+        34
+      </div>
 
-            <h2 id="studio-title">
-              {statementLines.map((line, index) => (
-                <motion.span
-                  key={line}
-                  initial={reduceMotion ? false : { opacity: 0, y: 30 }}
-                  whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "0px 0px -7% 0px" }}
-                  transition={{
-                    delay: reduceMotion ? 0 : index * 0.065,
-                    duration: reduceMotion ? 0.01 : 0.64,
-                    ease,
-                  }}
-                >
-                  {line}
-                </motion.span>
-              ))}
-            </h2>
+      <div className="site-container studio-about__inner">
+        <motion.div
+          className="section-label studio-about__label"
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+          transition={{ duration: reduceMotion ? 0.01 : 0.6, ease }}
+        >
+          <span>01</span>
+          <span>About Fold Theory</span>
+        </motion.div>
 
-            <motion.p
-              className="studio-about__introduction"
-              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -7% 0px" }}
-              transition={{ delay: reduceMotion ? 0 : 0.2, duration: reduceMotion ? 0.01 : 0.6, ease }}
-            >
-              Fold Theory is an independent branding and packaging studio creating thoughtful
-              identities and physical brand experiences for ambitious businesses.
-            </motion.p>
-
-            <motion.a
-              className="studio-about__link"
-              href="#contact"
-              onClick={highlightContactAfterScroll}
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: reduceMotion ? 0 : 0.26, duration: reduceMotion ? 0.01 : 0.52, ease }}
-            >
-              Start Your Project <span aria-hidden="true">&#8599;</span>
-            </motion.a>
-          </div>
-
-          <motion.figure
-            className="studio-about__feature"
-            initial={reduceMotion ? false : { opacity: 0, scale: 1.03 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-            transition={{ delay: reduceMotion ? 0 : 0.1, duration: reduceMotion ? 0.01 : 0.78, ease }}
-          >
-            <Image
-              src="/images/services/soda-bottle.jpg"
-              alt="Fold Theory beverage identity applied to a glass soda bottle"
-              fill
-              sizes="(max-width: 900px) 92vw, 42vw"
-              unoptimized
-            />
-          </motion.figure>
-        </div>
-
-        <div className="studio-about__principles-section">
+        <div className="studio-about__intro-row">
           <motion.div
-            className="studio-about__principles-heading"
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            className="studio-about__lead"
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-            transition={{ duration: reduceMotion ? 0.01 : 0.58, ease }}
+            transition={{ duration: reduceMotion ? 0.01 : 0.65, ease }}
           >
-            <span>Our approach</span>
-            <h3>Considered from first idea to final finish.</h3>
+            <h2 id="studio-title" className="studio-about__heading">
+              <span>Some brands see packaging as a finishing touch.</span>
+              <span>We see it as the first impression.</span>
+            </h2>
           </motion.div>
 
-          <ol className="studio-about__principles">
-            {principles.map((principle, index) => (
-              <motion.li
-                key={principle.number}
-                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "0px 0px -6% 0px" }}
-                transition={{
-                  delay: reduceMotion ? 0 : index * 0.075,
-                  duration: reduceMotion ? 0.01 : 0.56,
-                  ease,
-                }}
-              >
-                <span>{principle.number}</span>
-                <h4>{principle.title}</h4>
-                <p>{principle.description}</p>
-              </motion.li>
+          <motion.div
+            className="studio-about__intro"
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+            transition={{
+              delay: reduceMotion ? 0 : 0.1,
+              duration: reduceMotion ? 0.01 : 0.65,
+              ease,
+            }}
+          >
+            {introParagraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
             ))}
-          </ol>
+          </motion.div>
         </div>
+
+        <ul className="studio-about__facts">
+          {facts.map((fact, index) => (
+            <motion.li
+              key={fact.label}
+              initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -6% 0px" }}
+              transition={{
+                delay: reduceMotion ? 0 : 0.05 + index * 0.07,
+                duration: reduceMotion ? 0.01 : 0.62,
+                ease,
+              }}
+            >
+              <strong className="studio-about__fact-value">{fact.value}</strong>
+              <span className="studio-about__fact-label">{fact.label}</span>
+            </motion.li>
+          ))}
+        </ul>
+
+        <div className="studio-about__blocks">
+          {storyBlocks.map((block, index) => (
+            <motion.article
+              key={block.id}
+              className={`studio-about__block studio-about__block--${block.id}`}
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+              transition={{
+                delay: reduceMotion ? 0 : 0.06 + index * 0.08,
+                duration: reduceMotion ? 0.01 : 0.65,
+                ease,
+              }}
+            >
+              <span className="studio-about__block-number" aria-hidden="true">
+                {block.number}
+              </span>
+              <p className="studio-about__block-label">{block.label}</p>
+              <span className="studio-about__block-rule" aria-hidden="true" />
+              <p className="studio-about__block-copy">{block.text}</p>
+            </motion.article>
+          ))}
+        </div>
+
+        <motion.div
+          className="studio-about__finale"
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+          transition={{
+            delay: reduceMotion ? 0 : 0.1,
+            duration: reduceMotion ? 0.01 : 0.7,
+            ease,
+          }}
+        >
+          <p className="studio-about__closing">
+            Thirty-four years later, that belief continues to guide everything we
+            create.
+          </p>
+
+          <div className="studio-about__cta">
+            <p className="studio-about__cta-heading">
+              Let&apos;s create your next brand story.
+            </p>
+            <a
+              className="studio-about__cta-link"
+              href="#contact"
+              onClick={highlightContactAfterScroll}
+            >
+              Start Your Project <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

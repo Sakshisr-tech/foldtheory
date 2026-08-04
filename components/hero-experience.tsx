@@ -277,8 +277,8 @@ export function HeroExperience() {
                 }
               >
                 <Image
-                  src="/images/projects/injectoplast-packaging-hero.png"
-                  alt="Two custom cylindrical tea packages displayed in a warm interior setting"
+                  src="/images/projects/fold-theory-packaging-hero.png"
+                  alt="Fold Theory branded paper bag and premium rigid packaging box"
                   fill
                   priority
                   sizes="(min-width: 1025px) 48vw, 100vw"
@@ -289,7 +289,7 @@ export function HeroExperience() {
             </motion.div>
           </motion.div>
 
-          <div className="split-hero__shell">
+          <div className="site-container split-hero__shell">
             <motion.div
               className="split-hero__copy"
               style={
@@ -470,8 +470,8 @@ export function HeroExperience() {
     >
       <div className="hero-mobile__image">
         <Image
-          src="/images/projects/injectoplast-packaging-hero.png"
-          alt=""
+          src="/images/projects/fold-theory-packaging-hero.png"
+          alt="Fold Theory branded paper bag and premium rigid packaging box"
           fill
           priority
           sizes="100vw"
@@ -484,7 +484,7 @@ export function HeroExperience() {
       <div className="hero-mobile__overlay" />
     </motion.div>
 
-    <div className="hero-mobile__shell">
+    <div className="site-container hero-mobile__shell">
       <motion.div
         className="hero-mobile__copy"
         initial="hidden"

@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const links = [
   { href: "#work", id: "work", label: "Work" },
   { href: "#services", id: "services", label: "Services" },
-  { href: "#studio", id: "studio", label: "About" },
+  { href: "#about", id: "about", label: "About" },
   { href: "#contact", id: "contact", label: "Contact" },
 ] as const;
 
@@ -20,24 +20,24 @@ type SectionId =
   | "services"
   | "featured"
   | "studio"
-  | "archive"
   | "process"
   | "about"
   | "trust"
+  | "trusted-by"
   | "faq"
   | "contact";
 
 const observedSections = [
   ["home", "home"],
-  ["introduction", "home"],
+  ["introduction", "about"],
+  ["about", "about"],
+  ["studio", "about"],
   ["work", "work"],
   ["services", "services"],
-  ["featured", "studio"],
-  ["studio", "studio"],
-  ["archive", "work"],
-  ["process", "process"],
-  ["about", "process"],
-  ["trust", "process"],
+  ["featured", "about"],
+  ["process", "services"],
+  ["trusted-by", "services"],
+  ["trust", "services"],
   ["faq", "faq"],
   ["contact", "contact"],
 ] as const;
@@ -66,7 +66,6 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId>("home");
-  const [showPersistentCta, setShowPersistentCta] = useState(false);
   const [currentYear, setCurrentYear] = useState<number | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -159,38 +158,6 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       if (frame === null) frame = window.requestAnimationFrame(updateProgress);
     };
     updateProgress();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      if (frame !== null) window.cancelAnimationFrame(frame);
-    };
-  }, []);
-
-  useEffect(() => {
-    const services = document.getElementById("services");
-    const contact = document.getElementById("contact");
-    if (!services || !contact) return;
-
-    let frame: number | null = null;
-    let lastValue = false;
-    const updateCta = () => {
-      const servicesRect = services.getBoundingClientRect();
-      const contactRect = contact.getBoundingClientRect();
-      const hasPassedServices = servicesRect.bottom < window.innerHeight * 0.2;
-      const contactVisible = contactRect.top < window.innerHeight * 0.82 && contactRect.bottom > 0;
-      const nextValue = hasPassedServices && !contactVisible;
-      if (nextValue !== lastValue) {
-        lastValue = nextValue;
-        setShowPersistentCta(nextValue);
-      }
-      frame = null;
-    };
-    const schedule = () => {
-      if (frame === null) frame = window.requestAnimationFrame(updateCta);
-    };
-    updateCta();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule, { passive: true });
     return () => {
@@ -400,25 +367,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
       <main id="main-content" tabIndex={-1}>{children}</main>
 
-      <AnimatePresence>
-        {showPersistentCta && (
-          <motion.a
-            className="persistent-project-cta"
-            href={pathname === "/" ? "#contact" : "/#contact"}
-            onClick={pathname === "/" ? anchorHandler("#contact") : undefined}
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-            transition={{ duration: reduceMotion ? 0.01 : 0.38, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span>Start a Project</span><i aria-hidden="true">↗</i>
-          </motion.a>
-        )}
-      </AnimatePresence>
-
       <footer className="site-footer" aria-labelledby="footer-cta-title">
         <div className="site-footer__monogram" aria-hidden="true">FT</div>
-        <div className="site-footer__inner">
+        <div className="site-container site-footer__inner">
           <div className="site-footer__cta">
             <motion.h2
               id="footer-cta-title"
@@ -467,7 +418,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
             >
               <h3>Navigation</h3>
               <nav aria-label="Footer navigation">
-                {[...links.slice(0, 3), { href: "#archive", id: "archive", label: "Project Archive" }, links[3]].map((item) => (
+                {links.map((item) => (
                   <a href={pathname === "/" ? item.href : `/${item.href}`} key={item.id} onClick={pathname === "/" ? anchorHandler(item.href) : undefined}>{item.label}</a>
                 ))}
               </nav>
@@ -481,7 +432,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
               transition={{ delay: reduceMotion ? 0 : 0.16, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
             >
               <h3>Contact</h3>
-              <a href="mailto:hello@foldtheory.com">hello@foldtheory.com</a>
+              <a href="mailto:foldtheory2@gmail.com">foldtheory2@gmail.com</a>
               <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">Instagram ↗</a>
               <span>New Delhi, India</span>
               <small>Response within<br />1–2 business days</small>

@@ -4,23 +4,22 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const capabilityList = [
-  "Strategy",
-  "Identity",
+const capabilities = [
+  "Planning",
   "Packaging",
-  "Print",
-  "Art Direction",
+  "Printing",
+  "Finishing",
   "Production",
 ] as const;
 
 const listVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.12 } },
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
 };
 
 const cellVariants = {
-  hidden: { opacity: 0, x: -12 },
-  visible: { opacity: 1, x: 0 },
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const headlineVariants = {
@@ -33,7 +32,7 @@ const headlineLineVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.72, ease },
+    transition: { duration: 0.65, ease },
   },
 };
 
@@ -58,7 +57,7 @@ export function PostHeroEditorial({
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-          transition={{ duration: reduceMotion ? 0.01 : 0.52, ease }}
+          transition={{ duration: reduceMotion ? 0.01 : 0.5, ease }}
         >
           <span>01</span>
           <span>The studio, in brief</span>
@@ -75,74 +74,51 @@ export function PostHeroEditorial({
           >
             <span className="editorial-intro__line">
               <motion.span variants={reduceMotion ? undefined : headlineLineVariants}>
-                We create <em>considered identities</em>
+                We bring <em>great</em> packaging ideas
               </motion.span>
             </span>
             <span className="editorial-intro__line">
               <motion.span variants={reduceMotion ? undefined : headlineLineVariants}>
-                and packaging systems that make brands
-              </motion.span>
-            </span>
-            <span className="editorial-intro__line">
-              <motion.span variants={reduceMotion ? undefined : headlineLineVariants}>
-                tangible, memorable and meaningful.
+                to life with precision and craftsmanship.
               </motion.span>
             </span>
           </motion.h2>
 
           <motion.div
             className="editorial-intro__copy"
-            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-            transition={{ delay: 0.18, duration: reduceMotion ? 0.01 : 0.64, ease }}
+            transition={{ delay: 0.14, duration: reduceMotion ? 0.01 : 0.58, ease }}
           >
             <p>{supportingCopy}</p>
             <span>{location}</span>
           </motion.div>
         </div>
 
-        <motion.div
-          className="capability-strip-shell"
+        <motion.ul
+          className="capability-strip"
+          aria-label="Core capabilities"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "0px 0px -8% 0px" }}
           variants={reduceMotion ? undefined : listVariants}
         >
-          <motion.i
-            className="capability-strip__rule capability-strip__rule--top"
-            aria-hidden="true"
-            initial={reduceMotion ? false : { scaleX: 0 }}
-            whileInView={reduceMotion ? undefined : { scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: reduceMotion ? 0.01 : 0.72, ease }}
-          />
-          <ul className="capability-strip" aria-label="Core capabilities">
-            {capabilityList.map((capability, index) => (
-              <motion.li
-                key={capability}
-                variants={reduceMotion ? undefined : cellVariants}
-                transition={{ duration: reduceMotion ? 0.01 : 0.46, ease }}
-              >
-                <a href="#services" aria-label={`Explore ${capability} services`}>
-                  <span className="capability-strip__number">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="capability-strip__label">{capability}</span>
-                  <span className="capability-strip__arrow" aria-hidden="true">&#8599;</span>
-                </a>
-              </motion.li>
-            ))}
-          </ul>
-          <motion.i
-            className="capability-strip__rule capability-strip__rule--bottom"
-            aria-hidden="true"
-            initial={reduceMotion ? false : { scaleX: 0 }}
-            whileInView={reduceMotion ? undefined : { scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.08, duration: reduceMotion ? 0.01 : 0.72, ease }}
-          />
-        </motion.div>
+          {capabilities.map((capability, index) => (
+            <motion.li
+              key={capability}
+              variants={reduceMotion ? undefined : cellVariants}
+              transition={{ duration: reduceMotion ? 0.01 : 0.42, ease }}
+            >
+              <div className="capability-strip__item">
+                <span className="capability-strip__number">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="capability-strip__label">{capability}</span>
+              </div>
+            </motion.li>
+          ))}
+        </motion.ul>
       </div>
     </section>
   );
@@ -165,9 +141,6 @@ export function SelectedWorkIndex() {
           A curated selection of custom packaging, branding and print work.
         </p>
       </div>
-      <a className="selected-work__all" href="#archive">
-        View All Projects <span aria-hidden="true">&#8594;</span>
-      </a>
     </motion.header>
   );
 }

@@ -11,8 +11,10 @@ const editorialLayouts = [
   "square",
   "landscape",
   "campaign",
-  "portrait-left",
-  "portrait-right",
+  "square",
+  "landscape",
+  "feature",
+  "portrait",
 ] as const;
 
 type ProjectShowcaseProps = {
@@ -31,6 +33,7 @@ export function ProjectShowcase({ variant }: ProjectShowcaseProps) {
         return (
           <motion.article
             className={`editorial-project editorial-project--${editorialLayout}`}
+            data-project={project.id}
             key={project.id}
             initial={reduceMotion ? false : { opacity: 0, y: 28, scale: 0.98 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
