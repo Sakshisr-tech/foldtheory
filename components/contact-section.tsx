@@ -83,7 +83,7 @@ export function ContactSection() {
               rel="noopener noreferrer"
             >
               <WhatsAppIcon className="contact-experience__cta-icon" />
-              <span>Contact on WhatsApp</span>
+              <span>Chat on WhatsApp</span>
             </a>
 
             <a
