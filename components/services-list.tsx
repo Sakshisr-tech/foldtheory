@@ -43,15 +43,32 @@ export function ServicesEditorial() {
                   >
                     <button
                       type="button"
-                      aria-pressed={active}
+                      aria-expanded={active}
                       onClick={() => setActiveId(service.id)}
                     >
-                      <span className="services-editorial__number">{service.number}</span>
+                      <span className="services-editorial__number">
+                        {service.number}
+                      </span>
+
                       <span className="services-editorial__service-copy">
                         <strong>{service.title}</strong>
                         <small>{service.description}</small>
                       </span>
                     </button>
+
+                    {/* Mobile image */}
+                    <div
+                      className={`services-editorial__mobile-image ${active ? "is-active" : ""
+                        }`}
+                    >
+                      <Image
+                        src={service.relatedImage.src}
+                        alt={service.relatedImage.alt}
+                        fill
+                        sizes="100vw"
+                        unoptimized
+                      />
+                    </div>
                   </li>
                 );
               })}
