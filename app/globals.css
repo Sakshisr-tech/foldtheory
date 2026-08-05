@@ -6573,7 +6573,36 @@ button {
   .split-hero--edge .split-hero__cta { height: 49px; }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1100px) and (min-width: 961px) {
+  .site-header,
+  .site-header--scrolled {
+    padding: 8px 14px;
+    gap: 12px;
+  }
+
+  .site-header__nav {
+    gap: 18px;
+  }
+
+  .site-header__nav a {
+    font-size: 14px;
+  }
+
+  .site-header__project-cta {
+    min-height: 46px;
+    padding: 0 18px;
+    font-size: 13px;
+  }
+
+  .site-header .wordmark > span {
+    font-size: 13px;
+  }
+
+  .site-header .wordmark > small {
+    font-size: 5px;
+  }
+}
+@media (max-width: 767px) {
   .site-header,
   .site-header--scrolled {
     top: 12px;
@@ -6595,9 +6624,17 @@ button {
     min-height: 40px;
   }
 
-  .split-hero--edge .split-hero__copy { width: min(57vw, 590px); }
-  .split-hero--edge .split-hero__title { font-size: clamp(4.6rem, 9.2vw, 6.2rem); }
-  .split-hero--edge .split-hero__visual { width: 62vw; }
+  .split-hero--edge .split-hero__copy {
+  width: min(48vw, 500px);
+}
+
+.split-hero--edge .split-hero__title {
+  font-size: clamp(3.9rem, 7vw, 5.2rem);
+}
+
+.split-hero--edge .split-hero__visual {
+  width: 50vw;
+}
 }
 
 @media (max-width: 760px) {
@@ -9182,7 +9219,7 @@ button {
     min-width: 0;
     min-height: 44px;
     gap: 9px;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .site-header__logo-tile {
