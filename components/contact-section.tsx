@@ -41,7 +41,7 @@ export function ContactSection() {
           viewport={{ once: true, margin: "0px 0px -8% 0px" }}
           transition={{ duration: reduceMotion ? 0.01 : 0.55, ease }}
         >
-          <span>06</span>
+          <span>07</span>
           <span>Begin a conversation</span>
         </motion.div>
 

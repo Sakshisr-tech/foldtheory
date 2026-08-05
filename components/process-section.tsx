@@ -39,7 +39,7 @@ export function ProcessSection() {
           viewport={{ once: true, margin: "0px 0px -8% 0px" }}
           transition={{ duration: reduceMotion ? 0.01 : 0.6, ease }}
         >
-          <span>04</span>
+          <span>05</span>
           <span>Our Process</span>
         </motion.div>
 

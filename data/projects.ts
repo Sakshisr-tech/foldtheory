@@ -36,10 +36,10 @@ const ceciliaImage: ProjectImage = {
 };
 
 const sodaShopImage: ProjectImage = {
-  src: "/images/projects/soda-shop-bottle.jpg",
-  alt: "Glass Soda Shop bottle printed with a red wordmark",
-  width: 743,
-  height: 929,
+  src: "/images/projects/soda-shop-bottle.png",
+  alt: "Glass Soda Shop bottle filled with orange soda on a wooden table",
+  width: 820,
+  height: 1024,
 };
 
 const bombaaImage: ProjectImage = {
@@ -54,6 +54,20 @@ const khoyaBoxesImage: ProjectImage = {
   alt: "Pink sunburst and brown Khoya Skin Perfume presentation boxes on a production worktable",
   width: 1024,
   height: 768,
+};
+
+const coffeeCarriersImage: ProjectImage = {
+  src: "/images/projects/coffee-carriers.png",
+  alt: "Sustainable cardboard coffee cup carriers arranged on a stone surface",
+  width: 824,
+  height: 1024,
+};
+
+const khoyaGiftingImage: ProjectImage = {
+  src: "/images/projects/khoya-gifting.png",
+  alt: "White Khoya gift bags with gold rope handles in a pastel boutique setting",
+  width: 824,
+  height: 1024,
 };
 
 const khoyaMugsImage: ProjectImage = {
@@ -191,6 +205,54 @@ export const projects = [
     sourceUrl: "https://www.instagram.com/p/DXgiOlYEhha/",
   },
   {
+    id: "coffee-carriers",
+    number: "10",
+    title: "Coffee Carriers",
+    category: "Sustainable Packaging",
+    industry: "Food & Beverage",
+    summary:
+      "Thoughtfully engineered beverage carriers that combine functionality with clean, contemporary design.",
+    overview:
+      "A sustainable beverage carrier system designed to feel practical in hand while reading as clean, contemporary packaging.",
+    challenge:
+      "Create carriers that hold securely without adding visual clutter or excess material.",
+    solution:
+      "Structural die-cuts, kraft and white paper finishes, and restrained forms keep the carriers useful and refined.",
+    outcome:
+      "A produced family of coffee carriers suited to everyday takeaway and brand presentation.",
+    services: ["Sustainable Packaging", "Structural Design", "Production"],
+    packagingDetails: ["Cardboard carriers", "Die-cut handles", "Beverage takeaway formats"],
+    coverImage: coffeeCarriersImage,
+    detailImages: [coffeeCarriersImage],
+    layout: "portrait",
+    selected: true,
+    featured: false,
+  },
+  {
+    id: "khoya-gifting",
+    number: "11",
+    title: "Khoya Gifting",
+    category: "Luxury Packaging",
+    industry: "Food & Gifting",
+    summary:
+      "Elegant paper bags finished with premium detailing to elevate gifting and luxury retail experiences.",
+    overview:
+      "A luxury paper bag application for Khoya, finished to feel gift-ready across boutique and retail moments.",
+    challenge:
+      "Elevate a practical carry format into a premium gifting object without losing everyday usability.",
+    solution:
+      "Crisp white paper, gold rope handles and refined brand marking create a polished retail presence.",
+    outcome:
+      "A produced gifting bag that extends Khoya's luxury packaging language into the carry experience.",
+    services: ["Luxury Packaging", "Retail Packaging", "Production"],
+    packagingDetails: ["Premium paper bags", "Gold rope handles", "Foil brand detailing"],
+    coverImage: khoyaGiftingImage,
+    detailImages: [khoyaGiftingImage],
+    layout: "portrait",
+    selected: true,
+    featured: false,
+  },
+  {
     id: "ice-pop",
     number: "03",
     title: "Ice Pop",
@@ -311,12 +373,17 @@ export const projects = [
 
 export type ProjectId = (typeof projects)[number]["id"];
 
+/** IDs rendered together in the Khoya three-column Selected Work row. */
+export const khoyaRowProjectIds = ["khoya", "coffee-carriers", "khoya-gifting"] as const;
+
 const selectedProjectOrder = [
   "cecilia-pizzeria",
   "soda-shop",
   "ice-pop",
   "bombaa",
   "khoya",
+  "coffee-carriers",
+  "khoya-gifting",
   "secret-ingredient-khoya",
   "presentation-gifting",
   "heads-up-for-tails",

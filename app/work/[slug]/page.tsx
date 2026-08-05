@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProjectById, projects } from "@/data/projects";
 
@@ -33,9 +34,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article className="work-detail">
       <div className="work-detail__shell">
-        <a className="work-detail__back" href="/#work">
+        <Link className="work-detail__back" href="/#work">
           <span aria-hidden="true">&#8592;</span> Selected Work
-        </a>
+        </Link>
 
         <header className="work-detail__header">
           <div>
@@ -96,9 +97,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         <footer className="work-detail__footer">
           <p>Have a packaging story worth unfolding?</p>
-          <a className="button button--primary" href="/#contact">
+          <Link className="button button--primary" href="/#contact">
             Start Your Project <span aria-hidden="true">&#8599;</span>
-          </a>
+          </Link>
         </footer>
       </div>
     </article>

@@ -31,8 +31,9 @@ export function ServicesEditorial() {
             </p>
 
             <ul className="services-editorial__list">
-              {services.map((service) => {
+              {services.map((service, index) => {
                 const active = service.id === activeId;
+                const number = String(index + 1).padStart(2, "0");
 
                 return (
                   <li
@@ -47,7 +48,7 @@ export function ServicesEditorial() {
                       onClick={() => setActiveId(service.id)}
                     >
                       <span className="services-editorial__number">
-                        {service.number}
+                        {number}
                       </span>
 
                       <span className="services-editorial__service-copy">

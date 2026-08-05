@@ -7,9 +7,9 @@ import type Lenis from "lenis";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const links = [
+  { href: "#about", id: "about", label: "About" },
   { href: "#work", id: "work", label: "Work" },
   { href: "#services", id: "services", label: "Services" },
-  { href: "#about", id: "about", label: "About" },
   { href: "#contact", id: "contact", label: "Contact" },
 ] as const;
 
@@ -18,6 +18,7 @@ type SectionId =
   | "introduction"
   | "work"
   | "services"
+  | "products"
   | "featured"
   | "studio"
   | "process"
@@ -34,6 +35,7 @@ const observedSections = [
   ["studio", "about"],
   ["work", "work"],
   ["services", "services"],
+  ["products", "services"],
   ["featured", "about"],
   ["process", "services"],
   ["trusted-by", "services"],
@@ -66,7 +68,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId>("home");
-  const [currentYear, setCurrentYear] = useState<number | null>(null);
+  const [currentYear] = useState(() => new Date().getFullYear());
   const lenisRef = useRef<Lenis | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
@@ -79,10 +81,6 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     onVisibility();
     document.addEventListener("visibilitychange", onVisibility);
     return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, []);
-
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
   }, []);
 
   useEffect(() => {
@@ -453,7 +451,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="site-footer__bottom">
-            <span>© {currentYear ?? 2026} Fold Theory</span>
+            <span>© {currentYear} Fold Theory</span>
             <span>Designed with intention.</span>
             <span>All rights reserved.</span>
           </div>

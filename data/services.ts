@@ -2,7 +2,6 @@ import type { ProjectImage } from "./projects";
 
 export type Service = {
   id: string;
-  number: string;
   title: string;
   description: string;
   capability: string;
@@ -11,22 +10,7 @@ export type Service = {
 
 export const services = [
   {
-    id: "corrugated-boxes",
-    number: "01",
-    title: "Corrugated Boxes",
-    description:
-      "2-ply, 3-ply and 5-ply boxes tailored to your packaging and branding requirements.",
-    capability: "Custom corrugated packaging",
-    relatedImage: {
-      src: "/images/services/coffee-carriers.jpg",
-      alt: "Custom corrugated packaging carriers from Fold Theory production",
-      width: 1200,
-      height: 1500,
-    },
-  },
-  {
     id: "glass-mug-printing",
-    number: "02",
     title: "Glass & Mug Printing",
     description:
       "Customized printing for mugs and glassware using logos, brand names, artwork, and bespoke designs.",
@@ -39,36 +23,20 @@ export const services = [
     },
   },
   {
-    id: "paper-bags",
-    number: "03",
-    title: "Paper Bags",
+    id: "embossing",
+    title: "Embossing",
     description:
-      "Custom printed paper bags with premium finishes, twisted or flat handles, and flexible sizing options.",
-    capability: "Retail carry bags",
+      "Raised detailing that creates depth, texture, and a refined tactile finish, adding a premium touch to luxury packaging.",
+    capability: "Tactile finishing",
     relatedImage: {
-      src: "/images/projects/heads-up-for-tails-bag.png",
-      alt: "Orange Heads Up For Tails branded paper carry bag",
-      width: 768,
+      src: "/images/services/embossing-fold-theory-box.png",
+      alt: "Beige Fold Theory box with embossed logo on a stone surface",
+      width: 633,
       height: 1024,
     },
   },
   {
-    id: "embossing",
-    number: "04",
-    title: "Embossing",
-    description:
-      "Raised detailing that adds depth, texture, and a refined premium finish to packaging.",
-    capability: "Tactile finishing",
-    relatedImage: {
-      src: "/images/services/cecilia-close.jpg",
-      alt: "Close-up of embossed and printed packaging surface detail",
-      width: 1200,
-      height: 1500,
-    },
-  },
-  {
     id: "printing-solutions",
-    number: "05",
     title: "Printing Solutions",
     description:
       "High-quality CMYK printing, Pantone and special-colour printing for professional brand presentation.",
@@ -82,7 +50,6 @@ export const services = [
   },
   {
     id: "foil-stamping",
-    number: "06",
     title: "Foil Stamping",
     description:
       "Metallic finishes in gold, silver, rose gold, and other premium foil options.",

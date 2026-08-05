@@ -36,7 +36,7 @@ export function TrustedBySection() {
           viewport={{ once: true, margin: "0px 0px -8% 0px" }}
           transition={{ duration: reduceMotion ? 0.01 : 0.6, ease }}
         >
-          <span>05</span>
+          <span>06</span>
           <span>Trusted By</span>
         </motion.div>
 

@@ -2,6 +2,7 @@ import { ContactSection } from "@/components/contact-section";
 import { HeroExperience } from "@/components/hero-experience";
 import { SelectedWorkIndex } from "@/components/post-hero-editorial";
 import { ProcessSection } from "@/components/process-section";
+import { ProductsGrid } from "@/components/products-grid";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ServicesEditorial } from "@/components/services-list";
 import { StudioPhilosophy } from "@/components/studio-philosophy";
@@ -28,6 +29,8 @@ export function HomeExperience() {
       </section>
 
       <ServicesEditorial />
+
+      <ProductsGrid />
 
       <ProcessSection />
 
