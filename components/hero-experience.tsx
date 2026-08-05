@@ -200,7 +200,7 @@ export function HeroExperience() {
       aria-labelledby="hero-title"
     >
       {/* Desktop hero: keep this layout unchanged */}
-      <div className="hidden lg:block">
+      <div className="desktop-hero">
         <section
           className="split-hero split-hero--edge"
           aria-labelledby="hero-title"
@@ -443,7 +443,7 @@ export function HeroExperience() {
       </div>
 
       {/* Mobile hero: isolated from the desktop layout */}
-      <div className="block lg:hidden">
+      <div className="mobile-hero-wrapper">
   <section
     className="hero-mobile"
     aria-labelledby="hero-title-mobile"
