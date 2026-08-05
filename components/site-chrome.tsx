@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type Lenis from "lenis";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ResetScrollOnReload } from "@/components/reset-scroll-on-reload";
 
 const links = [
   { href: "#about", id: "about", label: "About" },
@@ -272,6 +273,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <ResetScrollOnReload />
       <a className="skip-link" href="#main-content">Skip to content</a>
       <div className="scroll-progress" aria-hidden="true"><span ref={progressRef} /></div>
 
@@ -407,34 +409,36 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
               <p>Helping brands create thoughtful packaging experiences through strategy, design and production.</p>
             </motion.div>
 
-            <motion.div
-              className="site-footer__column"
-              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
-              transition={{ delay: reduceMotion ? 0 : 0.08, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h3>Navigation</h3>
-              <nav aria-label="Footer navigation">
-                {links.map((item) => (
-                  <a href={pathname === "/" ? item.href : `/${item.href}`} key={item.id} onClick={pathname === "/" ? anchorHandler(item.href) : undefined}>{item.label}</a>
-                ))}
-              </nav>
-            </motion.div>
+            <div className="site-footer__mobile-columns">
+              <motion.div
+                className="site-footer__column site-footer__nav"
+                initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+                transition={{ delay: reduceMotion ? 0 : 0.08, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <h3>Navigation</h3>
+                <nav aria-label="Footer navigation">
+                  {links.map((item) => (
+                    <a href={pathname === "/" ? item.href : `/${item.href}`} key={item.id} onClick={pathname === "/" ? anchorHandler(item.href) : undefined}>{item.label}</a>
+                  ))}
+                </nav>
+              </motion.div>
 
-            <motion.div
-              className="site-footer__column site-footer__contact"
-              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -5% 0px" }}
-              transition={{ delay: reduceMotion ? 0 : 0.16, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h3>Contact</h3>
-              <a href="mailto:foldtheory2@gmail.com">foldtheory2@gmail.com</a>
-              <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">Instagram ↗</a>
-              <span>New Delhi, India</span>
-              <small>Response within<br />1–2 business days</small>
-            </motion.div>
+              <motion.div
+                className="site-footer__column site-footer__contact"
+                initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "0px 0px -5% 0px" }}
+                transition={{ delay: reduceMotion ? 0 : 0.16, duration: reduceMotion ? 0.01 : 0.56, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <h3>Contact</h3>
+                <a href="mailto:foldtheory2@gmail.com">foldtheory2@gmail.com</a>
+                <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">Instagram ↗</a>
+                <span>New Delhi, India</span>
+                <small>Response within<br />1–2 business days</small>
+              </motion.div>
+            </div>
 
             <motion.div
               className="site-footer__column site-footer__statement"

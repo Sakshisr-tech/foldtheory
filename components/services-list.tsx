@@ -32,24 +32,24 @@ export function ServicesEditorial() {
 
             <ul className="services-editorial__list">
               {services.map((service, index) => {
-                const active = service.id === activeId;
+                const isActive = service.id === activeId;
                 const number = String(index + 1).padStart(2, "0");
+                const mobileImageId = `service-mobile-image-${service.id}`;
 
                 return (
                   <li
-                    className={active ? "is-active" : undefined}
+                    className={isActive ? "is-active" : undefined}
                     key={service.id}
                     onMouseEnter={() => setActiveId(service.id)}
                     onFocusCapture={() => setActiveId(service.id)}
                   >
                     <button
                       type="button"
-                      aria-expanded={active}
+                      aria-expanded={isActive}
+                      aria-controls={mobileImageId}
                       onClick={() => setActiveId(service.id)}
                     >
-                      <span className="services-editorial__number">
-                        {number}
-                      </span>
+                      <span className="services-editorial__number">{number}</span>
 
                       <span className="services-editorial__service-copy">
                         <strong>{service.title}</strong>
@@ -57,19 +57,22 @@ export function ServicesEditorial() {
                       </span>
                     </button>
 
-                    {/* Mobile image */}
-                    <div
-                      className={`services-editorial__mobile-image ${active ? "is-active" : ""
-                        }`}
-                    >
-                      <Image
-                        src={service.relatedImage.src}
-                        alt={service.relatedImage.alt}
-                        fill
-                        sizes="100vw"
-                        unoptimized
-                      />
-                    </div>
+                    {isActive && (
+                      <div
+                        id={mobileImageId}
+                        className="services-editorial__mobile-visual"
+                      >
+                        <div className="services-editorial__mobile-image">
+                          <Image
+                            src={service.relatedImage.src}
+                            alt={service.relatedImage.alt}
+                            fill
+                            sizes="100vw"
+                            unoptimized
+                          />
+                        </div>
+                      </div>
+                    )}
                   </li>
                 );
               })}
@@ -81,26 +84,28 @@ export function ServicesEditorial() {
           </div>
 
           <figure className="services-editorial__visual" aria-live="polite">
-            {services.map((service) => {
-              const active = service.id === activeService.id;
+            <div className="services-editorial__image">
+              {services.map((service) => {
+                const active = service.id === activeService.id;
 
-              return (
-                <div
-                  className={`services-editorial__visual-image${active ? " is-active" : ""}`}
-                  key={service.id}
-                  aria-hidden={!active}
-                >
-                  <Image
-                    src={service.relatedImage.src}
-                    alt={active ? service.relatedImage.alt : ""}
-                    fill
-                    sizes="(max-width: 768px) 92vw, (max-width: 1024px) 42vw, 48vw"
-                    priority={service.id === defaultServiceId}
-                    unoptimized
-                  />
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    className={`services-editorial__visual-image${active ? " is-active" : ""}`}
+                    key={service.id}
+                    aria-hidden={!active}
+                  >
+                    <Image
+                      src={service.relatedImage.src}
+                      alt={active ? service.relatedImage.alt : ""}
+                      fill
+                      sizes="(max-width: 767px) 100vw, (max-width: 1100px) 45vw, 50vw"
+                      priority={service.id === defaultServiceId}
+                      unoptimized
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </figure>
         </div>
       </div>
