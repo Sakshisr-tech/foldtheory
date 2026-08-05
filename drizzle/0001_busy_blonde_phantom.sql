@@ -1,1 +1,0 @@
-ALTER TABLE `enquiries` ADD `phone` text;

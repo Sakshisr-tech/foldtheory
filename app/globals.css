@@ -7498,9 +7498,12 @@ button {
 
 .services-preview-stage {
   position: sticky;
-  top: 110px;
-  height: min(72vh, 690px);
+  top: calc(var(--header-height) + 24px);
+  width: 100%;
+  height: min(64vh, 590px);
+  margin-top: clamp(150px, 18vh, 220px);
   margin-right: -3vw;
+  align-self: start;
   transform: none;
 }
 
@@ -10042,5 +10045,82 @@ button {
 
   .menu-trigger {
     display: none !important;
+  }
+}
+/* =========================================================
+   TABLET SERVICES LAYOUT ONLY
+   721px to 1081px
+   Desktop and mobile remain unchanged
+   ========================================================= */
+
+@media (min-width: 721px) and (max-width: 1081px) {
+  .services-editorial,
+  .services-editorial__shell,
+  .services-editorial__grid {
+    overflow: visible !important;
+  }
+
+  .services-editorial__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.9fr);
+    grid-template-rows: auto auto auto auto;
+    column-gap: clamp(36px, 5vw, 64px);
+    row-gap: 0;
+    align-items: start;
+  }
+
+  /*
+   * Makes the heading, paragraph, list and link act as
+   * direct children of services-editorial__grid.
+   */
+  .services-editorial__content {
+    display: contents;
+  }
+
+  /* Heading stays above both columns */
+  .services-editorial__content > h2 {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    margin-bottom: 0;
+  }
+
+  /* Description stays above both columns */
+  .services-editorial__intro {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    max-width: 58ch;
+    margin: 32px 0 64px;
+  }
+
+  /* Services list on the left */
+  .services-editorial__list {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+  }
+
+  /* Link stays below the list */
+  .services-editorial__link {
+    grid-column: 1;
+    grid-row: 4;
+    justify-self: start;
+  }
+
+  /* Image begins beside the list, not beside the heading */
+  .services-editorial__visual {
+    position: sticky !important;
+    grid-column: 2;
+    grid-row: 3 / span 2;
+
+    top: max(
+      104px,
+      calc((100svh - min(48vw, 460px)) / 2)
+    ) !important;
+
+    width: 100%;
+    height: min(48vw, 460px);
+    max-height: 460px;
+    margin: 0 !important;
+    align-self: start;
   }
 }
