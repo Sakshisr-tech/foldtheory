@@ -9149,14 +9149,13 @@ button {
   }
 
   .site-header .wordmark small {
-    overflow: hidden;
-    margin-top: 4px;
-    font-size: 6px;
-    letter-spacing: 0.13em;
-    line-height: 1.1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  display: block;
+  margin-top: 4px;
+  font-size: 6px;
+  letter-spacing: 0.13em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
 
   .site-header__nav,
   .site-header__project-cta {
