@@ -2990,7 +2990,7 @@ button {
   .project-story--feature .project-story__narrative { padding-top: 11vw; }
 }
 
-@media (max-width: 1022px) {
+@media (max-width: 720x) {
   :root { --header-height: 76px; }
 
   .site-header { grid-template-columns: 1fr auto; min-height: 76px; padding-inline: 5vw; }
@@ -3009,7 +3009,7 @@ button {
   .project-types__grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   body { font-size: 16px; }
   .section { padding-block: clamp(88px, 13vw, 118px); }
   .section-label { margin-bottom: 54px; }
@@ -3171,60 +3171,57 @@ button {
     gap: 58px 72px;
   }
 }
-/* Compact desktop/tablet navbar: 1024px–1100px */
-@media (min-width: 1023px) and (max-width: 1100px) {
+/* Compact desktop/tablet navbar: 721px–1100px */
+@media (min-width: 721px) and (max-width: 1100px) {
   .site-header {
-    width: calc(100% - 32px);
+    width: calc(100% - 24px);
     max-width: none;
     min-height: 68px;
-    padding-inline: 18px;
-    gap: 18px;
+    padding-inline: 14px;
+    gap: clamp(10px, 1.6vw, 18px);
   }
 
   .site-header__brand {
     flex-shrink: 0;
-    gap: 9px;
+    gap: 8px;
   }
 
   .site-header__logo-tile {
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
   }
 
   .site-header .wordmark > span {
-    font-size: 13px;
+    font-size: 12px;
   }
 
-  .site-header .wordmark > small {
+  .site-header .wordmark small {
     display: block;
-    font-size: 5.5px;
-    letter-spacing: 0.11em;
+    font-size: 5px;
+    letter-spacing: 0.08em;
     white-space: nowrap;
   }
 
   .site-header__nav {
     display: flex;
-    align-items: center;
-    gap: 24px;
+    gap: clamp(10px, 1.6vw, 24px);
     margin-inline: auto;
   }
 
   .site-header__nav a {
-    font-size: 13px;
+    font-size: clamp(10px, 1.25vw, 13px);
     white-space: nowrap;
   }
 
   .site-header__project-cta {
-    flex: 0 0 auto;
-    min-height: 48px;
-    padding-inline: 20px;
-    gap: 16px;
-    font-size: 12px;
+    display: inline-flex;
+    min-height: 42px;
+    padding-inline: 14px;
+    font-size: 11px;
     white-space: nowrap;
   }
 
-  /* Keep full desktop navigation at this width */
   .menu-trigger {
     display: none;
   }
@@ -4020,7 +4017,7 @@ button {
   -webkit-text-stroke: 1px var(--ivory);
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .final-cta {
     min-height: auto;
   }
@@ -4247,7 +4244,7 @@ button {
   object-fit: cover;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .studio-philosophy.section--philosophy {
     padding: 118px 0 96px;
   }
@@ -4808,7 +4805,7 @@ button {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   .trusted-by {
     padding: 88px 0;
   }
@@ -5274,7 +5271,7 @@ button {
   line-height: 1.15;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 720px) {
   .section--work { padding: 100px 0 120px; }
 
   .selected-work__index {
@@ -6115,7 +6112,7 @@ button {
   .split-hero__scroll { bottom: 30px; }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .split-hero {
     min-height: calc(100svh - var(--header-height));
     margin-bottom: -24px;
@@ -6148,7 +6145,7 @@ button {
   .split-hero__ghost-type span:nth-child(4) { display: none; }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 720px) {
   .hero-mobile .hero-mobile__ambient {
     position: absolute;
     z-index: 0;
@@ -6754,47 +6751,7 @@ button {
   filter: saturate(0.88) contrast(1.06) brightness(0.96);
 }
 
-@media (min-width: 761px) and (max-width: 1024px) {
-  .split-hero.split-hero--edge {
-    display: flex;
-    height: auto;
-    min-height: 0;
-    flex-direction: column;
-  }
 
-  .split-hero--edge .split-hero__shell {
-    order: 1;
-    width: 100%;
-    height: auto;
-    min-height: 700px;
-    justify-content: center;
-    padding-block: 130px 80px;
-  }
-
-  .split-hero--edge .split-hero__copy {
-    display: flex;
-    width: min(86vw, 720px);
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .split-hero--edge .split-hero__eyebrow::before { display: none; }
-  .split-hero--edge .split-hero__title { font-size: clamp(5rem, 11.5vw, 7rem); }
-  .split-hero--edge .split-hero__divider { transform-origin: center; }
-
-  .split-hero--edge .split-hero__visual {
-    position: relative;
-    inset: auto;
-    order: 2;
-    width: 100%;
-    height: min(106vw, 980px);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.42) 10%, #000 24%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.42) 10%, #000 24%);
-  }
-
-  .split-hero--edge .split-hero__visual img { object-position: 48% center !important; }
-}
 
 @media (max-width: 760px) {
   .split-hero.split-hero--edge {
@@ -6831,7 +6788,7 @@ button {
 }
 
 /* Proportional full-bleed Hero image */
-@media (min-width: 1025px) {
+@media (min-width: 721px) {
   .split-hero.split-hero--edge {
     height: 100svh;
     min-height: 100svh;
@@ -6991,7 +6948,7 @@ button {
   line-height: 0.98;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   .work-detail__header { grid-template-columns: 1fr; gap: 34px; }
   .work-detail__narrative { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 54px; }
 }
@@ -7243,7 +7200,7 @@ button {
   transform-origin: left center;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   .editorial-intro.section--intro {
     padding-top: clamp(128px, 16vw, 154px);
     padding-bottom: clamp(64px, 9vw, 84px);
@@ -7642,7 +7599,7 @@ button {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .section--services .services-experience {
     grid-template-columns: 1fr;
     gap: 0;
@@ -8780,7 +8737,7 @@ button {
   transform: translateX(5px);
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 720px) {
   .process-editorial .process-journey__rail--horizontal {
     display: none;
   }
@@ -9615,7 +9572,7 @@ button {
   }
 }
 /* Final mobile hero layout override */
-@media (max-width: 1023px) {
+@media (max-width: 720px) {
   .hero-mobile .hero-mobile__shell {
     display: flex;
     width: 100%;
@@ -9654,7 +9611,7 @@ button {
     white-space: nowrap;
   }
 }
-@media (max-width: 1023px) {
+@media (max-width: 720px) {
   .hero-mobile {
     height: auto;
     min-height: 0;
