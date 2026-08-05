@@ -540,7 +540,7 @@ button {
   font-size: 13px;
   font-weight: 650;
 }
-.menu-trigger__label
+.menu-trigger__label,
 .menu-trigger__glyph {
   display: block;
   margin: 0;

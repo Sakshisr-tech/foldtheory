@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import { headers } from "next/headers";
 import { SiteChrome } from "@/components/site-chrome";
 import "./globals.css";
+import "./mobile-polish.css";
 
 const geist = Geist({
   variable: "--font-geist",
