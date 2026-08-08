@@ -357,7 +357,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
             </nav>
             <a className="button button--light mobile-menu__cta" href={pathname === "/" ? "#contact" : "/#contact"} onClick={pathname === "/" ? anchorHandler("#contact", true) : undefined}>Start a Project <span aria-hidden="true">↗</span></a>
             <div className="mobile-menu__meta">
-              <span>New Delhi, India</span>
+              <span>C 29, Okhla Phase 1, New Delhi, India</span>
               <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">@fold.theory2 ↗</a>
               <span>Branding · Packaging · Print</span>
             </div>
@@ -435,7 +435,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
                 <h3>Contact</h3>
                 <a href="mailto:foldtheory2@gmail.com">foldtheory2@gmail.com</a>
                 <a href="https://www.instagram.com/fold.theory2/" target="_blank" rel="noreferrer">Instagram ↗</a>
-                <span>New Delhi, India</span>
+                <span>C 29, Okhla Phase 1, New Delhi, India</span>
                 <small>Response within<br />1–2 business days</small>
               </motion.div>
             </div>

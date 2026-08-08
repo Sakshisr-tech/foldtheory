@@ -11,7 +11,7 @@ export type ContactLink = {
 
 export const studio = {
   label: "Independent Branding & Packaging Studio",
-  location: "New Delhi, India",
+  location: "C 29, Okhla Phase 1, New Delhi, India",
   introduction:
     "We create considered identities and packaging systems that make brands tangible, memorable and meaningful.",
   supportingCopy:
@@ -24,7 +24,7 @@ export const studio = {
 } as const;
 
 export const trustItems = [
-  { label: "Studio base", value: "New Delhi, India" },
+  { label: "Studio base", value: "C 29, Okhla Phase 1, New Delhi, India" },
   { label: "Core practice", value: "Branding, packaging & print" },
   { label: "Production", value: "Artwork, material & vendor-ready guidance" },
 ] as const satisfies readonly TrustItem[];
@@ -77,7 +77,7 @@ export const contactLinks = [
   },
   {
     label: "Studio",
-    value: "New Delhi, India",
+    value: "C 29, Okhla Phase 1, New Delhi, India",
   },
 ] as const satisfies readonly ContactLink[];
 

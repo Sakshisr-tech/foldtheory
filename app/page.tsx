@@ -28,6 +28,7 @@ const structuredData = [
       "Independent branding and packaging studio creating brand identities, packaging, print and production-ready tactile experiences.",
     address: {
       "@type": "PostalAddress",
+      streetAddress: "C 29, Okhla Phase 1",
       addressLocality: "New Delhi",
       addressCountry: "IN",
     },

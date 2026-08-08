@@ -103,7 +103,7 @@ export function ContactSection() {
           >
             <a href="mailto:foldtheory2@gmail.com">foldtheory2@gmail.com</a>
             <span aria-hidden="true"> • </span>
-            <span>New Delhi, India</span>
+            <span>C 29, Okhla Phase 1, New Delhi, India</span>
             <span aria-hidden="true"> • </span>
             <a
               href="https://www.instagram.com/fold.theory2/"
